@@ -2,6 +2,9 @@
 ## Tambah Kredensial
 Endpoint : POST /api/kredensial
 
+Request Header :
+- X-API-TOKEN : TOKEN (MANDATORY)
+
 Request BODY :
 ```json
 {
@@ -11,10 +14,16 @@ Request BODY :
 }
 ```
 
-Response BODY (Success) : 
+Response BODY (Success) :
+
 ```json
 {
-  "data" : "accept"
+  "data": {
+    "id": "random String",
+    "pekerjaan": "programmer",
+    "pendidikan": "Institut Fukuoka",
+    "tanggal": "23-07-2023"
+  }
 }
 ```
 Response BODY (Failed) : 

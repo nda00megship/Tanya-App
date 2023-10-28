@@ -1,0 +1,48 @@
+package esa.askerestful.service;
+
+import esa.askerestful.entity.User;
+import esa.askerestful.model.RegisterUserRequest;
+import esa.askerestful.repository.UserRepository;
+import esa.askerestful.security.BCrypt;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import jakarta.validation.Validator;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
+
+@Service
+public class UserService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ValidationService validationService;
+
+    @Autowired
+    private MicroService microService;
+    public void register(RegisterUserRequest request){
+        validationService.validate(request);
+
+        if(userRepository.existsByUsername(request.getUsername())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "username sudah dipakai");
+        }
+
+        User user = new User();
+        user.setIdUser(microService.idGenerator());
+        user.setUsername(request.getUsername());
+        user.setPassword(BCrypt.hashpw(request.getPassword() , BCrypt.gensalt()));
+        user.setEmail(request.getEmail());
+        userRepository.save(user);
+    }
+
+
+
+}
