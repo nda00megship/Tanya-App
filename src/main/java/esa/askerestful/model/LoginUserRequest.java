@@ -1,17 +1,16 @@
 package esa.askerestful.model;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+@Getter
+@Setter
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
-@Getter
 @Builder
-public class RegisterUserRequest {
+public class LoginUserRequest {
 
     @NotBlank
     @Size(max = 100)
@@ -20,11 +19,4 @@ public class RegisterUserRequest {
     @NotBlank
     @Size(max = 9)
     private String password;
-
-    @NotBlank
-    @Size(max = 100)
-    @Email
-    private String email;
-
-
 }

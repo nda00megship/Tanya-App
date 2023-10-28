@@ -3,9 +3,12 @@ package esa.askerestful.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import esa.askerestful.entity.User;
+import esa.askerestful.model.LoginUserRequest;
 import esa.askerestful.model.RegisterUserRequest;
+import esa.askerestful.model.TokenResponse;
 import esa.askerestful.model.WebResponse;
 import esa.askerestful.repository.UserRepository;
+import esa.askerestful.security.BCrypt;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +75,6 @@ class UserControllerTest {
         user.setUsername("esa12");
         user.setEmail("esa12@example.com");
         user.setPassword("esa123");
-
         userRepository.save(user);
 
         RegisterUserRequest request = new RegisterUserRequest();
@@ -102,7 +104,7 @@ class UserControllerTest {
         RegisterUserRequest request = new RegisterUserRequest();
         request.setUsername("");
         request.setPassword("");
-        request.setEmail(   "");
+        request.setEmail("");
 
         mockMvc.perform(
                 post("/api/users")
@@ -117,4 +119,6 @@ class UserControllerTest {
             assertNotNull( response.getErrors());
         });
     }
+
+
 }

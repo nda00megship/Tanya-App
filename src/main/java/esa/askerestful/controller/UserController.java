@@ -27,7 +27,7 @@ public class UserController {
         userService.register(request);
 
         return WebResponse.<String>builder()
-                .data("OK")
+                .data("accept")
                 .build();
     }
 

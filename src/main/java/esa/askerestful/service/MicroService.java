@@ -11,4 +11,14 @@ public class MicroService {
         currentId++;
         return userId;
     }
+
+    public String tokenGenerator(){
+        String userId = "TOKEN_" + String.format("%04d" , currentId);
+        currentId++;
+        return userId;
+    }
+
+    public Long next30Days(){
+        return System.currentTimeMillis() + (1000 * 16 * 24 *30);
+    }
 }
