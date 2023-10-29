@@ -4,6 +4,7 @@ import esa.askerestful.entity.Pertanyaan;
 import esa.askerestful.entity.User;
 import esa.askerestful.model.CreatePertanyaanrReq;
 import esa.askerestful.model.PertanyaanResponse;
+import esa.askerestful.model.UpdatePertanyaanReq;
 import esa.askerestful.model.WebResponse;
 import esa.askerestful.repository.PertanyaanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,23 @@ public class PertanyaanService {
                         HttpStatus.NOT_FOUND ,
                         "pertanyaan not found"
                         ));
+        return toPertanyaanResponse(pertanyaan);
+    }
+
+    public PertanyaanResponse update(User user , UpdatePertanyaanReq request){
+        validationService.validate(request);
+
+        Pertanyaan pertanyaan = pertanyaanRepo.findFirstByUserAndId(user, request.getIdPertanyaan())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Contact not Found"
+                ));
+
+        pertanyaan.setHeader(request.getHeader());
+        pertanyaan.setDeskripsi(request.getDeskripsi());
+
+        pertanyaanRepo.save(pertanyaan);
+
         return toPertanyaanResponse(pertanyaan);
     }
 

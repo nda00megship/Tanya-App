@@ -3,6 +3,7 @@ package esa.askerestful.controller;
 import esa.askerestful.entity.User;
 import esa.askerestful.model.CreatePertanyaanrReq;
 import esa.askerestful.model.PertanyaanResponse;
+import esa.askerestful.model.UpdatePertanyaanReq;
 import esa.askerestful.model.WebResponse;
 import esa.askerestful.service.PertanyaanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,21 @@ public class PertanyaanController {
     public WebResponse<PertanyaanResponse> get(User user ,@PathVariable("idPertanyaan") String id){
         PertanyaanResponse pertanyaanResponse = pertanyaanService.get(user , id);
 
+        return WebResponse.<PertanyaanResponse>builder()
+                .data(pertanyaanResponse)
+                .build();
+    }
+
+    @PutMapping(
+            path = "/api/pertanyaan/{idPertanyaan}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<PertanyaanResponse> update(User user ,
+                                               @RequestBody UpdatePertanyaanReq request,
+                                               @PathVariable("idPertanyaan") String idPertanyaan){
+        request.setIdPertanyaan(idPertanyaan);
+        PertanyaanResponse pertanyaanResponse = pertanyaanService.update(user, request);
         return WebResponse.<PertanyaanResponse>builder()
                 .data(pertanyaanResponse)
                 .build();

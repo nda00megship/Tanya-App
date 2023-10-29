@@ -10,6 +10,7 @@ import lombok.*;
 @Setter
 public class PertanyaanResponse {
 
+
     private String id;
 
     private String header;

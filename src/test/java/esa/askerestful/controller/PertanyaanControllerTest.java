@@ -5,6 +5,7 @@ import esa.askerestful.entity.Pertanyaan;
 import esa.askerestful.entity.User;
 import esa.askerestful.model.CreatePertanyaanrReq;
 import esa.askerestful.model.PertanyaanResponse;
+import esa.askerestful.model.UpdatePertanyaanReq;
 import esa.askerestful.model.WebResponse;
 import esa.askerestful.repository.PertanyaanRepository;
 import esa.askerestful.repository.UserRepository;
@@ -153,6 +154,65 @@ class PertanyaanControllerTest {
             assertEquals(pertanyaan.getDeskripsi() , response.getData().getDeskripsi());
             assertEquals(pertanyaan.getSuka() , response.getData().getSuka());
 
+        });
+    }
+
+    @Test
+    void updatePertanyaanSuccess()throws Exception{
+        User user = userRepository.findById("USER_1").orElseThrow();
+
+        Pertanyaan pertanyaan = new Pertanyaan();
+        pertanyaan.setIdPertanyaan("Pertanyaan_1");
+        pertanyaan.setHeader("ini adalah header");
+        pertanyaan.setDeskripsi("ini adalah deskripsi");
+        pertanyaan.setSuka(0);
+        pertanyaan.setUser(user);
+
+
+        UpdatePertanyaanReq req = new UpdatePertanyaanReq();
+        req.setHeader("ini adalah header");
+        req.setDeskripsi("ini adalah deskripsi");
+
+
+        mockMvc.perform(
+                put("/api/pertanyaan/" + pertanyaan.getIdPertanyaan())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(req))
+                        .header("X-API-TOKEN" , "token")
+        ).andExpectAll(
+                status().isOk()
+        ).andDo(result -> {
+            WebResponse<PertanyaanResponse> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+            });
+            assertNull(response.getErrors());
+            assertEquals(req.getDeskripsi() , response.getData().getDeskripsi());
+            assertEquals(req.getHeader() , response.getData().getHeader());
+
+
+            assertTrue(pertanyaanRepository.existsById(response.getData().getId()));
+
+        });
+    }
+
+    @Test
+    void updateContactBadRequest()throws Exception{
+        UpdatePertanyaanReq request = new UpdatePertanyaanReq();
+        request.setDeskripsi("");
+        request.setHeader("salah");
+
+        mockMvc.perform(
+                put("/api/pertanyaan/123")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+                        .header("X-API-TOKEN" , "token")
+        ).andExpectAll(
+                status().isBadRequest()
+        ).andDo(result -> {
+            WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<WebResponse<String>>() {
+            });
+            assertNotNull(response.getErrors());
         });
     }
 
