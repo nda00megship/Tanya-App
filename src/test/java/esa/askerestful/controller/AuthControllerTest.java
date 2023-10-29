@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -117,6 +118,54 @@ class AuthControllerTest {
             assertEquals(userDb.getToken() , response.getData().getToken());
             assertEquals(userDb.getTokenExpiredAt() , response.getData().getExpiredAt());
 
+        });
+    }
+
+
+
+    @Test
+    void logoutFailed()throws Exception{
+        mockMvc.perform(
+                delete("/api/auth/logout")
+                        .accept(MediaType.APPLICATION_JSON)
+        ).andExpectAll(
+                status().isUnauthorized()
+        ).andDo(result -> {
+            WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+            });
+
+            assertNotNull(response.getErrors());
+        });
+    }
+
+    @Test
+    void logoutSuccess()throws Exception{
+        User user = new User();
+        user.setIdUser("User_1");
+        user.setUsername("esa");
+        user.setEmail("Maulana@gmail.com");
+        user.setPassword(BCrypt.hashpw("esa123" , BCrypt.gensalt()));
+        user.setToken("token");
+        user.setTokenExpiredAt(System.currentTimeMillis() + 100000000L);
+
+        userRepository.save(user);
+
+        mockMvc.perform(
+                delete("/api/auth/logout")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .header("X-API-TOKEN" , user.getToken())
+        ).andExpectAll(
+                status().isOk()
+        ).andDo(result -> {
+            WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+            });
+
+            assertNull(response.getErrors());
+            assertEquals("logout" , response.getData());
+
+            User userDb = new User();
+            assertNotNull(userDb);
+            assertNull(userDb.getToken());
         });
     }
 }

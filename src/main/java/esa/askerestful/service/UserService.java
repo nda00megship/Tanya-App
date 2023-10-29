@@ -2,6 +2,8 @@ package esa.askerestful.service;
 
 import esa.askerestful.entity.User;
 import esa.askerestful.model.RegisterUserRequest;
+import esa.askerestful.model.UpdateUserRequest;
+import esa.askerestful.model.UserResponse;
 import esa.askerestful.repository.UserRepository;
 import esa.askerestful.security.BCrypt;
 import jakarta.validation.ConstraintViolation;
@@ -43,6 +45,34 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public UserResponse get(User user){
+        return UserResponse.builder()
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .build();
+    }
+
+    @Transactional
+    public UserResponse update(UpdateUserRequest request , User user){
+        validationService.validate(request);
+
+        if(Objects.nonNull(request.getUsername())){
+            user.setUsername(request.getUsername());
+        }
+        if(Objects.nonNull(request.getEmail())){
+            user.setEmail(request.getEmail());
+        }
+        if(Objects.nonNull(request.getPassword())){
+            user.setPassword(BCrypt.hashpw(request.getPassword() , BCrypt.gensalt()));
+        }
+
+        userRepository.save(user);
+
+        return UserResponse.builder()
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .build();
+    }
 
 
 }

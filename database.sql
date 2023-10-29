@@ -7,6 +7,8 @@ create table users (
     token_expired_at bigint
 )engine InnoDB;
 
+
+
 --insert into users (username , email , password)values (
 --    "esa" , "esa@gmail.com" , "esa123"
 --);

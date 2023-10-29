@@ -76,7 +76,7 @@ Response Body (Failed , 401) :
 ```
 
 ## Update User
-Endpoint: Patch
+Endpoint: Patch /api/user/current
 
 Request Body :
 ```json
