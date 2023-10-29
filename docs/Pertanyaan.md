@@ -11,8 +11,7 @@ Request BODY :
 {
   "Header" : "Apa itu programming",
   "deskripsi" : "mungkin aku baru terjun ke dunia ini",
-  "like" : 0 ,
-  "dislike" : 0
+  "like" : 0 
 }
 ```
 
@@ -24,8 +23,7 @@ Response BODY (Success) :
     "id" : "random String",
     "Header" : "Apa itu programming",
     "deskripsi" : "mungkin aku baru terjun ke dunia ini",
-    "like" : 0 ,
-    "dislike" : 0
+    "like" : 0 
   }
 }
 ```
@@ -51,8 +49,7 @@ Response Body (Success) :
     "id" : "random String",
     "Header" : "Apa itu programming",
     "deskripsi" : "mungkin aku baru terjun ke dunia ini",
-    "like" : 0 ,
-    "dislike" : 0
+    "like" : 0 
   }
 }
 ```
@@ -75,8 +72,6 @@ Request BODY :
 {
   "Header" : "Apa itu programming",
   "deskripsi" : "mungkin aku baru terjun ke dunia ini",
-  "like" : 0 ,
-  "dislike" : 0
 }
 ```
 
@@ -88,8 +83,7 @@ Response Body (Success) :
     "id" : "random String",
     "Header" : "Apa itu programming",
     "deskripsi" : "mungkin aku baru terjun ke dunia ini",
-    "like" : 0 ,
-    "dislike" : 0
+    "like" : 0 
   }
 }
 ```

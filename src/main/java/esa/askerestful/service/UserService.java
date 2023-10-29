@@ -38,7 +38,7 @@ public class UserService {
         }
 
         User user = new User();
-        user.setIdUser(microService.idGenerator());
+        user.setIdUser(microService.idUserGenerator());
         user.setUsername(request.getUsername());
         user.setPassword(BCrypt.hashpw(request.getPassword() , BCrypt.gensalt()));
         user.setEmail(request.getEmail());

@@ -6,10 +6,17 @@ import org.springframework.stereotype.Service;
 public class MicroService {
 
     private int currentId = 0;
-    public String idGenerator(){
+    private int currentIdPertanyaan = 0;
+    public String idUserGenerator(){
         String userId = "USER_" + String.format("%04d" , currentId);
         currentId++;
         return userId;
+    }
+
+    public String idPertanyaanGenerator(){
+        String pertanyaanId = "PERTANYAAN_" + String.format("%04d" , currentIdPertanyaan);
+        currentIdPertanyaan++;
+        return pertanyaanId;
     }
 
     public String tokenGenerator(){
