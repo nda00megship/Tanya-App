@@ -120,9 +120,7 @@ Endpoint : GET /api/pertanyaan
 
 Query Param :
  - header : String, pertanyaan header, using like query, optional
- - deskripsi : String , pertanyaan deskripsi, using like query, optional 
- - like : Integer Using like query 
- - komentar : Integer Using like query 
+ - deskripsi : String , pertanyaan deskripsi, using like query, optional
  - page : Integer, start from 0
  - size : Integer , default 0
 
@@ -136,9 +134,7 @@ Response Body (Success) :
   "data": {
     "id": "random String",
     "Header": "Apa itu programming",
-    "deskripsi": "mungkin aku baru terjun ke dunia ini",
-    "like": 2,
-    "komentar": 3
+    "deskripsi": "mungkin aku baru terjun ke dunia ini"
   },
   "paging": {
     "currentPage": 0,

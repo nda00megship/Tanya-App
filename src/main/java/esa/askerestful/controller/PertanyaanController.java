@@ -2,14 +2,14 @@ package esa.askerestful.controller;
 
 import esa.askerestful.entity.Pertanyaan;
 import esa.askerestful.entity.User;
-import esa.askerestful.model.CreatePertanyaanrReq;
-import esa.askerestful.model.PertanyaanResponse;
-import esa.askerestful.model.UpdatePertanyaanReq;
-import esa.askerestful.model.WebResponse;
+import esa.askerestful.model.*;
 import esa.askerestful.service.PertanyaanService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class PertanyaanController {
@@ -68,6 +68,36 @@ public class PertanyaanController {
                 .data("terhapus")
                 .build();
     }
+
+    @GetMapping(
+            path = "/api/pertanyaans" ,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<List<PertanyaanResponse>> search(
+            User user,
+            @RequestParam(value = "header" , required = false) String header ,
+            @RequestParam(value = "deskripsi" , required = false) String deskripsi ,
+            @RequestParam(value = "page" , required = false, defaultValue = "0") Integer page ,
+            @RequestParam(value = "size" , required = false, defaultValue = "10") Integer size
+    ){
+        SearchPertanyaanRequest request = SearchPertanyaanRequest.builder()
+                .page(page)
+                .size(size)
+                .header(header)
+                .deskripsi(deskripsi)
+                .build();
+
+        Page<PertanyaanResponse> pertanyaanResponses = pertanyaanService.search(user , request);
+        return WebResponse.<List<PertanyaanResponse>>builder()
+                .data(pertanyaanResponses.getContent())
+                .paging(PagingResponse.builder()
+                        .currentPage(pertanyaanResponses.getNumber())
+                        .totalPage(pertanyaanResponses.getTotalPages())
+                        .size(pertanyaanResponses.getSize())
+                        .build())
+                .build();
+    }
+
 
 
 

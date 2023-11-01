@@ -18,6 +18,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.core.type.TypeReference;
+
+import java.util.List;
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -47,7 +51,7 @@ class PertanyaanControllerTest {
     @BeforeEach
     void setUp(){
         userRepository.deleteAll();
-
+        pertanyaanRepository.deleteAll();
         User user = new User();
         user.setIdUser("USER_1");
         user.setUsername("esa");
@@ -216,5 +220,113 @@ class PertanyaanControllerTest {
         });
     }
 
+    @Test
+    void searchNotFound()throws Exception{
 
+        mockMvc.perform(
+                get("/api/pertanyaans" )
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("X-API-TOKEN" , "token")
+        ).andExpectAll(
+                status().isOk()
+        ).andDo(result -> {
+            WebResponse<List<PertanyaanResponse>> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+            });
+            assertNull(response.getErrors());
+
+            assertEquals(0 , response.getData().size());
+            assertEquals(0 , response.getPaging().getTotalPage());
+            assertEquals(0 , response.getPaging().getCurrentPage());
+            assertEquals(10 , response.getPaging().getSize());
+        });
+    }
+
+    @Test
+    void searchUsingHeader()throws Exception{
+        User user = userRepository.findByUsername("esa").orElseThrow();
+
+        for (int i = 0 ; i< 100 ;  i++){
+            Pertanyaan pertanyaan = new Pertanyaan();
+            pertanyaan.setIdPertanyaan(UUID.randomUUID().toString());
+            pertanyaan.setUser(user);
+            pertanyaan.setHeader("ini header " + i);
+            pertanyaan.setDeskripsi("deskripsi");
+            pertanyaanRepository.save(pertanyaan);
+        }
+        mockMvc.perform(
+                get("/api/pertanyaans" )
+                        .queryParam("header" , "ini header")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("X-API-TOKEN" , "token")
+        ).andExpectAll(
+                status().isOk()
+        ).andDo(result -> {
+            WebResponse<List<PertanyaanResponse>> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+            });
+            assertNull(response.getErrors());
+
+            assertEquals(10 , response.getData().size());
+            assertEquals(10 , response.getPaging().getTotalPage());
+            assertEquals(0 , response.getPaging().getCurrentPage());
+            assertEquals(10 , response.getPaging().getSize());
+        });
+    }
+
+    @Test
+    void searchSuccess()throws Exception{
+        User user = userRepository.findByUsername("esa").orElseThrow();
+
+        for (int i = 0 ; i< 100 ;  i++){
+            Pertanyaan pertanyaan = new Pertanyaan();
+            pertanyaan.setIdPertanyaan(UUID.randomUUID().toString());
+            pertanyaan.setUser(user);
+            pertanyaan.setHeader("ini header " + i);
+            pertanyaan.setDeskripsi("ini adalah deskripsi " + i);
+            pertanyaanRepository.save(pertanyaan);
+        }
+        mockMvc.perform(
+                get("/api/pertanyaans" )
+                        .queryParam("header" , "ini header ")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("X-API-TOKEN" , "token")
+        ).andExpectAll(
+                status().isOk()
+        ).andDo(result -> {
+            WebResponse<List<PertanyaanResponse>> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+            });
+            assertNull(response.getErrors());
+
+
+            assertEquals(10 , response.getData().size());
+            assertEquals(10 , response.getPaging().getTotalPage());
+            assertEquals(0 , response.getPaging().getCurrentPage());
+            assertEquals(10 , response.getPaging().getSize());
+        });
+
+        mockMvc.perform(
+                get("/api/pertanyaans" )
+                        .queryParam("deskripsi" , "ini adalah deskripsi")
+                        .queryParam("page" , "100")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("X-API-TOKEN" , "token")
+        ).andExpectAll(
+                status().isOk()
+        ).andDo(result -> {
+            WebResponse<List<PertanyaanResponse>> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+            });
+            assertNull(response.getErrors());
+
+
+            assertEquals(0 , response.getData().size());
+            assertEquals(10 , response.getPaging().getTotalPage());
+            assertEquals(100 , response.getPaging().getCurrentPage());
+            assertEquals(10 , response.getPaging().getSize());
+        });
+
+
+    }
 }

@@ -2,16 +2,26 @@ package esa.askerestful.service;
 
 import esa.askerestful.entity.Pertanyaan;
 import esa.askerestful.entity.User;
-import esa.askerestful.model.CreatePertanyaanrReq;
-import esa.askerestful.model.PertanyaanResponse;
-import esa.askerestful.model.UpdatePertanyaanReq;
-import esa.askerestful.model.WebResponse;
+import esa.askerestful.model.*;
 import esa.askerestful.repository.PertanyaanRepository;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 
 @Service
 public class PertanyaanService {
@@ -94,5 +104,40 @@ public class PertanyaanService {
         pertanyaanRepo.delete(pertanyaan);
     }
 
+    @Transactional(readOnly = true)
+    public Page<PertanyaanResponse> search(User user , SearchPertanyaanRequest request){
+        Specification<Pertanyaan> specification = ((root, query, builder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            predicates.add(builder.equal(root.get("user") , user));
+
+            if(Objects.nonNull(request.getHeader())){
+                predicates.add(builder.or(
+                        builder.like(root.get("header") , "%" + request.getHeader() + "%")
+                ));}
+            if(Objects.nonNull(request.getDeskripsi())){
+                predicates.add(builder.or(
+                        builder.like(root.get("deskripsi") , "%" + request.getDeskripsi() + "%")
+                ));}
+
+            return query.where(predicates.toArray(
+                    new Predicate[]{}
+            )).getRestriction();
+
+
+        });
+
+        Pageable pageable = PageRequest.of(
+                request.getPage() , request.getSize()
+        );
+        Page<Pertanyaan> pertanyaans = pertanyaanRepo.findAll(specification , pageable);
+        List<PertanyaanResponse> pertanyaanResponses = pertanyaans.getContent()
+                .stream().map(this::toPertanyaanResponse)
+                .toList();
+
+        return new PageImpl<>(
+                pertanyaanResponses , pageable , pertanyaans.getTotalElements()
+        );
+    }
 
 }
