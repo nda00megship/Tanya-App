@@ -15,7 +15,7 @@ Response Body (Success) :
 
 ```json
 {
-  "content": [
+  "data": [
     {
       "id": "Encrypt String",
       "header" : "apakah pertanyaan 1 , ini adalah header",
