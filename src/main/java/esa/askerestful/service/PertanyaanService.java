@@ -83,5 +83,16 @@ public class PertanyaanService {
         return toPertanyaanResponse(pertanyaan);
     }
 
+    @Transactional
+    public void remove(User user , String idPertanyaan){
+        Pertanyaan pertanyaan = pertanyaanRepo.findFirstByUserAndId(user , idPertanyaan)
+                        .orElseThrow(()-> new ResponseStatusException(
+                                HttpStatus.NOT_FOUND ,
+                                "pertanyaan tidak ditemukan"
+                                ));
+
+        pertanyaanRepo.delete(pertanyaan);
+    }
+
 
 }

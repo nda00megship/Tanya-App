@@ -11,7 +11,6 @@ Request BODY :
 {
   "Header" : "Apa itu programming",
   "deskripsi" : "mungkin aku baru terjun ke dunia ini",
-  "like" : 0 
 }
 ```
 

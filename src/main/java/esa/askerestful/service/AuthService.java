@@ -33,7 +33,7 @@ public class AuthService {
                 ));
 
         if(BCrypt.checkpw(request.getPassword() , user.getPassword())){
-            user.setToken(microService.tokenGenerator());
+            user.setToken(BCrypt.hashpw(microService.tokenGenerator() , BCrypt.gensalt()));
             user.setTokenExpiredAt(microService.next30Days());
             userRepository.save(user);
 

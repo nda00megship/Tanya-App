@@ -1,5 +1,6 @@
 package esa.askerestful.controller;
 
+import esa.askerestful.entity.Pertanyaan;
 import esa.askerestful.entity.User;
 import esa.askerestful.model.CreatePertanyaanrReq;
 import esa.askerestful.model.PertanyaanResponse;
@@ -55,5 +56,19 @@ public class PertanyaanController {
                 .data(pertanyaanResponse)
                 .build();
     }
+
+    @DeleteMapping(
+            path = "/api/pertanyaan/{idPertanyaan}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<String> delete(User user ,  @PathVariable("idPertanyaan") String idPertanyaan){
+        pertanyaanService.remove(user , idPertanyaan);
+
+        return WebResponse.<String>builder()
+                .data("terhapus")
+                .build();
+    }
+
+
 
 }

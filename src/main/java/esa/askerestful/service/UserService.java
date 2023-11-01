@@ -36,6 +36,9 @@ public class UserService {
         if(userRepository.existsByUsername(request.getUsername())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "username sudah dipakai");
         }
+        if(userRepository.existByEmail(request.getEmail())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "email sudah dipakai");
+        }
 
         User user = new User();
         user.setIdUser(microService.idUserGenerator());
