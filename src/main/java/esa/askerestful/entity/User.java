@@ -34,5 +34,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Pertanyaan> pertanyaan;
 
+    @OneToMany(mappedBy = "user")
+    private List<Komentar> komentar;
 
 }

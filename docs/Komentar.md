@@ -10,8 +10,7 @@ Request Header :
 Request Body :
 ```json
 {
-  "deskripsi" : "ini adalah isi komentar",
-  "tanggal" : "12/30/2023"
+  "deskripsi" : "ini adalah isi komentar"
 }
 ```
 

@@ -14,9 +14,14 @@
 --    suka int
 -- )engine InnoDB;
 
+create table komentar  (
+    id_komentar varchar(255) primary key not null,
+    deskripsi text not null ,
+    tanggal timestamp
+)engine InnoDB;
 
 
 --insert into users (username , email , password)values (
 --    "esa" , "esa@gmail.com" , "esa123"
 --);
-select * from pertanyaan;
+--select * from pertanyaan;

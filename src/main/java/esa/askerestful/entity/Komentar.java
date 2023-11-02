@@ -3,31 +3,29 @@ package esa.askerestful.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import java.sql.Timestamp;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
 @Getter
+@Setter
 @Entity
-@Table(name = "pertanyaan")
-public class Pertanyaan {
+@Table(name = "komentar")
+public class Komentar {
 
     @Id
-    @Column(name = "id_pertanyaan")
-    private String idPertanyaan;
-
-    private String header;
+    private String idKomentar;
 
     private String deskripsi;
 
-    private int suka;
+    private Timestamp tanggal;
+
+    @ManyToOne
+    @JoinColumn(name = "idPertanyaan" , referencedColumnName = "id_pertanyaan")
+    private Pertanyaan pertanyaan;
 
     @ManyToOne
     @JoinColumn(name = "idUser" , referencedColumnName = "id_user")
     private User user;
-
-    @OneToMany(mappedBy = "pertanyaan")
-    private List<Komentar> komentar;
 }
