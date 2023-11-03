@@ -11,6 +11,7 @@ import esa.askerestful.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
@@ -56,5 +57,16 @@ public class KomentarService {
                 .tanggal(komentar.getTanggal())
                 .id_pertanyaan(pertanyaan.getIdPertanyaan())
                 .build();
+    }
+
+    @Transactional
+    public void delete(User user , String idKomentar){
+        Komentar komentar = komentarRepository.findFirstByUserAndId(user , idKomentar)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND ,
+                        "komentar not found"
+                ));
+
+        komentarRepository.delete(komentar);
     }
 }
