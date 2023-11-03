@@ -9,6 +9,9 @@ public class MicroService {
 
     private int currentId = 0;
     private int currentIdPertanyaan = 0;
+    private int currentIdToken = 0;
+
+    private int currentIdGambar;
 
     private int currentIdKomentar = 0;
     public String idUserGenerator(){
@@ -29,9 +32,14 @@ public class MicroService {
     }
 
     public String tokenGenerator(){
-        String userId = "TOKEN_" + String.format("%04d" , currentId);
-        currentId++;
-        return userId;
+        String tokenId = "TOKEN_" + String.format("%04d" , currentIdToken);
+        currentIdToken++;
+        return tokenId;
+    }
+    public String idGambarGenerator(){
+        String gambarId = "Gambar_" + String.format("%04d" , currentIdGambar);
+        currentIdGambar++;
+        return gambarId;
     }
 
     public Long next30Days(){
