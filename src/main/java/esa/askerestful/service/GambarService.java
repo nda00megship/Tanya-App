@@ -56,6 +56,7 @@ public class GambarService {
                 .namaGambar(gambar.getNamaGambar())
                 .path(gambar.getPath())
                 .ext(gambar.getExt())
+                .tanggal(gambar.getTanggal())
                 .build();
     }
     private String getFileExtension(String fileName) {
