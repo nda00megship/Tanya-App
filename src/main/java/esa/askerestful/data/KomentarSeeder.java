@@ -6,6 +6,7 @@ import esa.askerestful.entity.User;
 import esa.askerestful.repository.KomentarRepository;
 import esa.askerestful.repository.PertanyaanRepository;
 import esa.askerestful.repository.UserRepository;
+import esa.askerestful.service.MicroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,9 @@ public class KomentarSeeder {
     private UserRepository userRepository;
 
     @Autowired
+    private MicroService microService;
+
+    @Autowired
     private KomentarRepository komentarRepository;
 
     @Autowired
@@ -30,12 +34,13 @@ public class KomentarSeeder {
         Random random = new Random();
 
         for (Pertanyaan pertanyaan : pertanyaanList) {
-            int numberOfComments = random.nextInt(4) + 2;
+            int numberOfComments = random.nextInt(15);
 
             for (int i = 0; i < numberOfComments; i++) {
-                User user = userRepository.findByUsername("esa" + random.nextInt(3)).orElseThrow();
+                User user = userRepository.findByUsername("esa" + random.nextInt(10)).orElseThrow();
                 Komentar komentar = new Komentar();
                 komentar.setIdKomentar("komen_" + i);
+                komentar.setTanggal(microService.currentTimestamp);
                 komentar.setUser(user);
                 komentar.setPertanyaan(pertanyaan);
                 komentar.setDeskripsi("Ini adalah komentar #" + i + " untuk pertanyaan ini.");
@@ -43,6 +48,5 @@ public class KomentarSeeder {
                 komentarRepository.save(komentar);
             }
         }
-        System.out.println("Komentar berhasil diinisialisasi.");
     }
 }
