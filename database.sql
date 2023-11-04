@@ -32,3 +32,4 @@ create table store_gambar (
 --    "esa" , "esa@gmail.com" , "esa123"
 --);
 --select * from pertanyaan;
+select * from store_gambar;

@@ -5,9 +5,11 @@ import esa.askerestful.entity.User;
 import esa.askerestful.model.CreateGambarRequest;
 import esa.askerestful.model.GambarResponse;
 import esa.askerestful.repository.GambarRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class GambarService {
@@ -33,16 +36,16 @@ public class GambarService {
     @Autowired MicroService microService;
 
 
-    public GambarResponse uploadGambar(MultipartFile file)throws Exception {
+    public GambarResponse uploadGambar(User user ,MultipartFile file)throws Exception {
         validateImageType(file);
 
         Gambar gambar = new Gambar();
-        gambar.setIdGambar(microService.idGambarGenerator());
+        gambar.setIdGambar(UUID.randomUUID().toString());
         gambar.setNamaGambar(microService.idGambarGenerator());
         gambar.setPath(storageDirectory);
         gambar.setExt(getFileExtension(file.getOriginalFilename()));
         gambar.setTanggal(microService.currentTimestamp);
-
+        gambar.setUser(user);
         gambarRepository.save(gambar);
 
         String filePath = storageDirectory + File.separator + gambar.getNamaGambar() + gambar.getExt();
@@ -78,12 +81,10 @@ public class GambarService {
     }
 
 
-    public byte[] getGambar(String fileName)throws  Exception{
-        Optional<Gambar> gambar = gambarRepository.findById(fileName);
-
-        String fileData = gambar.get().getPath();
-        byte[] tempGambar = Files.readAllBytes(new File(fileData).toPath());
-
-        return tempGambar;
+    public byte[] getGambar(String fileName)throws  Exception {
+        Optional<Gambar> gambar = gambarRepository.findByUsername(fileName);
+        String filePath = gambar.get().getPath() + "\\" + gambar.get().getNamaGambar() + gambar.get().getExt();
+        byte[] images =  Files.readAllBytes(new File(filePath).toPath());
+        return images;
     }
 }

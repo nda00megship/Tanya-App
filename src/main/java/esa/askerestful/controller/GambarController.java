@@ -2,6 +2,7 @@ package esa.askerestful.controller;
 
 import esa.askerestful.entity.Gambar;
 import esa.askerestful.entity.User;
+import esa.askerestful.model.DownloadGambarResponse;
 import esa.askerestful.model.FileResponse;
 import esa.askerestful.model.GambarResponse;
 import esa.askerestful.model.WebResponse;
@@ -10,9 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.io.File;
 
 @RestController
 public class GambarController {
@@ -23,10 +27,10 @@ public class GambarController {
     @PostMapping(
             path = "api/upload-gambar"
     )
-    public FileResponse<GambarResponse> uploadGambar(@RequestParam("gambar") MultipartFile file) {
+    public FileResponse<GambarResponse> uploadGambar(User user ,@RequestParam("gambar") MultipartFile file) {
         try {
-            GambarResponse gambarResponse = gambarService.uploadGambar(file);
-            return new FileResponse<>(gambarResponse, HttpStatus.CREATED);
+            GambarResponse gambarResponse = gambarService.uploadGambar(user ,file);
+            return new FileResponse<>(gambarResponse,HttpStatus.CREATED  );
         } catch (ResponseStatusException e) {
             throw e;
         } catch (Exception e) {
@@ -35,13 +39,18 @@ public class GambarController {
     }
 
     @GetMapping(
-            path = "/api/gambar/{idGambar}"
+            path = "/api/gambar/{namaGambar}"
     )
-    public FileResponse<byte[]> getGambar(@PathVariable("idGambar") String id) throws Exception {
-        byte[] gambarData = gambarService.getGambar(id);
-
-        return FileResponse.<byte[]>builder()
-                .data(gambarData)
-                .build();
+    public ResponseEntity<?> getGambar(@PathVariable("namaGambar") String namaGambar) throws Exception{
+        byte[] gambarData = gambarService.getGambar(namaGambar);
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("image/png"))
+                .body(gambarData);
     }
+
+
+
+
+
+
 }
