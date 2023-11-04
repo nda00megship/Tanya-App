@@ -76,17 +76,21 @@ public class PertanyaanService {
         return toPertanyaanResponse(pertanyaan);
     }
 
-    public PertanyaanResponse update(User user , UpdatePertanyaanReq request){
-        validationService.validate(request);
-
-        Pertanyaan pertanyaan = pertanyaanRepo.findFirstByUserAndId(user, request.getIdPertanyaan())
+    @Transactional
+    public PertanyaanResponse update(User user ,UpdatePertanyaanReq req,  String idPertanyaan){
+        validationService.validate(idPertanyaan);
+        validationService.validate(req);
+        Pertanyaan pertanyaan = pertanyaanRepo.findFirstByUserAndId(user , idPertanyaan)
                 .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Contact not Found"
+                        HttpStatus.NOT_FOUND ,
+                        "pertanyaan not found"
                 ));
-
-        pertanyaan.setHeader(request.getHeader());
-        pertanyaan.setDeskripsi(request.getDeskripsi());
+        if(Objects.nonNull(req.getHeader())){
+            pertanyaan.setHeader(req.getHeader());
+        }
+        if(Objects.nonNull(req.getDeskripsi())){
+            pertanyaan.setDeskripsi(req.getDeskripsi());
+        }
 
         pertanyaanRepo.save(pertanyaan);
 

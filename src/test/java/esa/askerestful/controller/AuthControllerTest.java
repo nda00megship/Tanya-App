@@ -6,6 +6,9 @@ import esa.askerestful.entity.User;
 import esa.askerestful.model.LoginUserRequest;
 import esa.askerestful.model.TokenResponse;
 import esa.askerestful.model.WebResponse;
+import esa.askerestful.repository.GambarRepository;
+import esa.askerestful.repository.KomentarRepository;
+import esa.askerestful.repository.PertanyaanRepository;
 import esa.askerestful.repository.UserRepository;
 import esa.askerestful.security.BCrypt;
 import org.junit.jupiter.api.Assertions;
@@ -34,9 +37,22 @@ class AuthControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private KomentarRepository komentarRepository;
+
+    @Autowired
+    private GambarRepository gambarRepository;
+
+    @Autowired
+    private PertanyaanRepository pertanyaanRepository;
+
     @BeforeEach
     void setUp(){
+        pertanyaanRepository.deleteAll();
+        komentarRepository.deleteAll();
+        gambarRepository.deleteAll();
         userRepository.deleteAll();
+
     }
 
     @Test

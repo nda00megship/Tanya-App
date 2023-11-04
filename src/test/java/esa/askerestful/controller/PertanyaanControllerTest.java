@@ -7,17 +7,22 @@ import esa.askerestful.model.CreatePertanyaanrReq;
 import esa.askerestful.model.PertanyaanResponse;
 import esa.askerestful.model.UpdatePertanyaanReq;
 import esa.askerestful.model.WebResponse;
+import esa.askerestful.repository.GambarRepository;
+import esa.askerestful.repository.KomentarRepository;
 import esa.askerestful.repository.PertanyaanRepository;
 import esa.askerestful.repository.UserRepository;
 import esa.askerestful.security.BCrypt;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.core.type.TypeReference;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,6 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.MockMvcBuilder.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
+@Slf4j
 @SpringBootTest
 @AutoConfigureMockMvc
 class PertanyaanControllerTest {
@@ -39,8 +45,16 @@ class PertanyaanControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+
+
     @Autowired
     private PertanyaanController pertanyaanController;
+
+    @Autowired
+    private KomentarRepository komentarRepository;
+
+    @Autowired
+    private GambarRepository gambarRepository;
 
     @Autowired
     private PertanyaanRepository pertanyaanRepository;
@@ -50,8 +64,11 @@ class PertanyaanControllerTest {
 
     @BeforeEach
     void setUp(){
-        userRepository.deleteAll();
+
         pertanyaanRepository.deleteAll();
+        komentarRepository.deleteAll();
+        gambarRepository.deleteAll();
+        userRepository.deleteAll();
         User user = new User();
         user.setIdUser("USER_1");
         user.setUsername("esa");
@@ -129,7 +146,7 @@ class PertanyaanControllerTest {
     }
 
     @Test
-    void getContactSuccess()throws Exception{
+    void getPertanyaanSuccess()throws Exception{
         User user = userRepository.findById("USER_1").orElseThrow();
 
         Pertanyaan pertanyaan = new Pertanyaan();
@@ -171,19 +188,27 @@ class PertanyaanControllerTest {
         pertanyaan.setDeskripsi("ini adalah deskripsi");
         pertanyaan.setSuka(0);
         pertanyaan.setUser(user);
-
+        pertanyaanRepository.save(pertanyaan);
+//        Pertanyaan pertanyaan1 = pertanyaanRepository.findFirstByUserAndId(user , pertanyaan.getIdPertanyaan())
+//                .orElseThrow(() -> new ResponseStatusException(
+//                        HttpStatus.NOT_FOUND ,
+//                        "pertanyaan not found"
+//                ));
+//        log.info("pertanyaan id bro : " + pertanyaan1.getIdPertanyaan());
 
         UpdatePertanyaanReq req = new UpdatePertanyaanReq();
-        req.setHeader("ini adalah header");
-        req.setDeskripsi("ini adalah deskripsi");
+        req.setHeader("ini adalah header update");
+        req.setDeskripsi("ini adalah deskripsi update");
 
+
+        log.info("deskripsi setelah update" + pertanyaan.getIdPertanyaan());
 
         mockMvc.perform(
-                put("/api/pertanyaan/" + pertanyaan.getIdPertanyaan())
+                patch("/api/pertanyaan/" + pertanyaan.getIdPertanyaan())
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req))
-                        .header("X-API-TOKEN" , "token")
+                        .header("X-API-TOKEN" , user.getToken())
         ).andExpectAll(
                 status().isOk()
         ).andDo(result -> {
@@ -200,19 +225,19 @@ class PertanyaanControllerTest {
     }
 
     @Test
-    void updateContactBadRequest()throws Exception{
+    void updatePertanyaanNotFound()throws Exception{
         UpdatePertanyaanReq request = new UpdatePertanyaanReq();
-        request.setDeskripsi("");
+
         request.setHeader("salah");
 
         mockMvc.perform(
-                put("/api/pertanyaan/123")
+                patch("/api/pertanyaan/123")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
                         .header("X-API-TOKEN" , "token")
         ).andExpectAll(
-                status().isBadRequest()
+                status().isNotFound()
         ).andDo(result -> {
             WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<WebResponse<String>>() {
             });

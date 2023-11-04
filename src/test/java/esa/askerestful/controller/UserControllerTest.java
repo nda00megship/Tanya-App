@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import esa.askerestful.entity.User;
 import esa.askerestful.model.*;
+import esa.askerestful.repository.GambarRepository;
+import esa.askerestful.repository.KomentarRepository;
+import esa.askerestful.repository.PertanyaanRepository;
 import esa.askerestful.repository.UserRepository;
 import esa.askerestful.security.BCrypt;
 import lombok.extern.slf4j.Slf4j;
@@ -39,8 +42,21 @@ class UserControllerTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private KomentarRepository komentarRepository;
+
+    @Autowired
+    private GambarRepository gambarRepository;
+
+    @Autowired
+    private PertanyaanRepository pertanyaanRepository;
+
     @BeforeEach
     void setUp(){
+
+        pertanyaanRepository.deleteAll();
+        komentarRepository.deleteAll();
+        gambarRepository.deleteAll();
         userRepository.deleteAll();
     }
 

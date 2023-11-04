@@ -14,4 +14,6 @@ public interface PertanyaanRepository extends JpaRepository<Pertanyaan , String>
 
     @Query("SELECT p FROM Pertanyaan p WHERE p.user = :user AND p.idPertanyaan = :idPertanyaan")
     Optional<Pertanyaan> findFirstByUserAndId(User user , String idPertanyaan);
+
+
 }

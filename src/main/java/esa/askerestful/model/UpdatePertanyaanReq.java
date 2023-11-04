@@ -14,14 +14,11 @@ import lombok.*;
 public class UpdatePertanyaanReq {
 
     @JsonIgnore
-    @NotBlank
     private String idPertanyaan;
 
-    @NotBlank
     @Size(max = 255)
     private String header;
 
-    @NotBlank
     @Size(max = 1000)
     private String deskripsi;
 }

@@ -42,7 +42,7 @@ public class PertanyaanController {
                 .build();
     }
 
-    @PutMapping(
+    @PatchMapping(
             path = "/api/pertanyaan/{idPertanyaan}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -50,8 +50,7 @@ public class PertanyaanController {
     public WebResponse<PertanyaanResponse> update(User user ,
                                                @RequestBody UpdatePertanyaanReq request,
                                                @PathVariable("idPertanyaan") String idPertanyaan){
-        request.setIdPertanyaan(idPertanyaan);
-        PertanyaanResponse pertanyaanResponse = pertanyaanService.update(user, request);
+        PertanyaanResponse pertanyaanResponse = pertanyaanService.update(user, request ,idPertanyaan);
         return WebResponse.<PertanyaanResponse>builder()
                 .data(pertanyaanResponse)
                 .build();
