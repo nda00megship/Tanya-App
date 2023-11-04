@@ -41,13 +41,24 @@ public class GambarController {
     @GetMapping(
             path = "/api/gambar/{namaGambar}"
     )
-    public ResponseEntity<?> getGambar(@PathVariable("namaGambar") String namaGambar) throws Exception{
-        byte[] gambarData = gambarService.getGambar(namaGambar);
+    public ResponseEntity<?> getGambar(User user ,@PathVariable("namaGambar") String namaGambar) throws Exception{
+        byte[] gambarData = gambarService.getGambar(user , namaGambar);
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.valueOf("image/png"))
                 .body(gambarData);
     }
 
+    @DeleteMapping(
+            path = "/api/gambar/{namaGambar}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<String> deleteGambar(User user , @PathVariable("namaGambar") String namaGambar)throws Exception{
+        gambarService.deleteGambar(user, namaGambar);
+
+        return WebResponse.<String>builder()
+                .data("OK")
+                .build();
+    }
 
 
 

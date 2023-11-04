@@ -189,12 +189,6 @@ class PertanyaanControllerTest {
         pertanyaan.setSuka(0);
         pertanyaan.setUser(user);
         pertanyaanRepository.save(pertanyaan);
-//        Pertanyaan pertanyaan1 = pertanyaanRepository.findFirstByUserAndId(user , pertanyaan.getIdPertanyaan())
-//                .orElseThrow(() -> new ResponseStatusException(
-//                        HttpStatus.NOT_FOUND ,
-//                        "pertanyaan not found"
-//                ));
-//        log.info("pertanyaan id bro : " + pertanyaan1.getIdPertanyaan());
 
         UpdatePertanyaanReq req = new UpdatePertanyaanReq();
         req.setHeader("ini adalah header update");

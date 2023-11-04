@@ -81,10 +81,29 @@ public class GambarService {
     }
 
 
-    public byte[] getGambar(String fileName)throws  Exception {
-        Optional<Gambar> gambar = gambarRepository.findByUsername(fileName);
+    public byte[] getGambar(User user ,String fileName)throws  Exception {
+        Optional<Gambar> gambar = gambarRepository.findByNameAndUser(user  , fileName);
         String filePath = gambar.get().getPath() + "\\" + gambar.get().getNamaGambar() + gambar.get().getExt();
         byte[] images =  Files.readAllBytes(new File(filePath).toPath());
         return images;
+    }
+
+    public void deleteGambar(User user , String fileName)throws Exception{
+        Optional<Gambar> gambar = gambarRepository.findByNameAndUser(user , fileName);
+        if (gambar.isPresent()){
+            String filePath = gambar.get().getPath() + "\\" + gambar.get().getNamaGambar() + gambar.get().getExt();
+            File file = new File(filePath);
+
+            if (file.exists()){
+                if (file.delete()){
+                    gambarRepository.delete(gambar.get());
+                }else {
+                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED , "gagal terhapus");
+                }
+            }else {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND , "gambar not found");
+            }
+        }
+
     }
 }
