@@ -128,7 +128,6 @@ public class PertanyaanService {
                     new Predicate[]{}
             )).getRestriction();
 
-
         });
 
         Pageable pageable = PageRequest.of(

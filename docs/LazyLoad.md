@@ -18,20 +18,22 @@ Response Body (Success) :
   "data": [
     {
       "id": "Encrypt String",
-      "header" : "apakah pertanyaan 1 , ini adalah header",
-      "deskripsi": "Pertanyaan 1 , ini adalah deskripsi"
+      "header": "apakah pertanyaan 1 , ini adalah header",
+      "deskripsi": "Pertanyaan 1 , ini adalah deskripsi",
+      "suka": 10
     },
     {
       "id": "Encrypt String",
-      "header" : "apakah pertanyaan 1 , ini adalah header",
-      "deskripsi": "Pertanyaan 2 adalah deskripsi"
+      "header": "apakah pertanyaan 1 , ini adalah header",
+      "deskripsi": "Pertanyaan 2 adalah deskripsi",
+      "suka": 12
     }
     // lanjut
   ],
   // Ini adalah nomor halaman yang diminta oleh pengguna.
   "page": 1,
   //  jumlah elemen (item) yang akan ditampilkan dalam satu halaman.
-  "size": 4, 
+  "size": 4,
   "totalElements": 100,
   // Jumlah total elemen
   "totalPages": 10
