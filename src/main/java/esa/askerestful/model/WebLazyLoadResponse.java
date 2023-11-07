@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 @Data
 @AllArgsConstructor
@@ -15,5 +16,7 @@ public class WebLazyLoadResponse<T>{
 
     private String errors;
 
-    private LazyLoadResponse paging;
+    private PagingResponse paging;
+
+    private HttpStatus status;
 }

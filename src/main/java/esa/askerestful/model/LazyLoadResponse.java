@@ -9,11 +9,8 @@ import lombok.*;
 @Getter
 @Setter
 public class LazyLoadResponse {
-    public int pages;
+    public int totalSize;
 
     public int size;
 
-    public int totalElements;
-
-    public int totalPage;
 }
