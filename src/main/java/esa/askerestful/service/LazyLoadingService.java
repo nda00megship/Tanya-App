@@ -37,14 +37,11 @@ public class LazyLoadingService {
     @Transactional(readOnly = true)
     public Page<PertanyaanResponse> lazyLoading(User user , LazyLoadingRequest request){
         Specification<Pertanyaan> specification = (((root, query, criteriaBuilder) -> {
-            List<Predicate> predicates = new ArrayList<>();
-
-            predicates.add(criteriaBuilder.equal(root.get("user"), user));
 
             query.orderBy(criteriaBuilder.desc(root.get("suka")));
 
-            Predicate[] predicatesArray = predicates.toArray(new Predicate[]{});
-            return criteriaBuilder.and(predicatesArray);
+
+            return criteriaBuilder.and();
         }));
         Pageable pageable = PageRequest.of(
                 request.getPage() , request.getSize()
