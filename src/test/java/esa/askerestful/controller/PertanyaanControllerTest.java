@@ -3,10 +3,7 @@ package esa.askerestful.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import esa.askerestful.entity.Pertanyaan;
 import esa.askerestful.entity.User;
-import esa.askerestful.model.CreatePertanyaanrReq;
-import esa.askerestful.model.PertanyaanResponse;
-import esa.askerestful.model.UpdatePertanyaanReq;
-import esa.askerestful.model.WebResponse;
+import esa.askerestful.model.*;
 import esa.askerestful.repository.GambarRepository;
 import esa.askerestful.repository.KomentarRepository;
 import esa.askerestful.repository.PertanyaanRepository;
@@ -65,8 +62,8 @@ class PertanyaanControllerTest {
     @BeforeEach
     void setUp(){
 
-        pertanyaanRepository.deleteAll();
         komentarRepository.deleteAll();
+        pertanyaanRepository.deleteAll();
         gambarRepository.deleteAll();
         userRepository.deleteAll();
         User user = new User();
@@ -250,7 +247,7 @@ class PertanyaanControllerTest {
         ).andExpectAll(
                 status().isOk()
         ).andDo(result -> {
-            WebResponse<List<PertanyaanResponse>> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+            WebPagingResponse<List<PertanyaanResponse>> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
             });
             assertNull(response.getErrors());
 
@@ -282,7 +279,7 @@ class PertanyaanControllerTest {
         ).andExpectAll(
                 status().isOk()
         ).andDo(result -> {
-            WebResponse<List<PertanyaanResponse>> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+            WebPagingResponse<List<PertanyaanResponse>> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
             });
             assertNull(response.getErrors());
 
@@ -314,7 +311,7 @@ class PertanyaanControllerTest {
         ).andExpectAll(
                 status().isOk()
         ).andDo(result -> {
-            WebResponse<List<PertanyaanResponse>> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+            WebPagingResponse<List<PertanyaanResponse>> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
             });
             assertNull(response.getErrors());
 
@@ -335,7 +332,7 @@ class PertanyaanControllerTest {
         ).andExpectAll(
                 status().isOk()
         ).andDo(result -> {
-            WebResponse<List<PertanyaanResponse>> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+            WebPagingResponse<List<PertanyaanResponse>> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
             });
             assertNull(response.getErrors());
 

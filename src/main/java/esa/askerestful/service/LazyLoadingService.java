@@ -2,24 +2,17 @@ package esa.askerestful.service;
 
 import esa.askerestful.entity.Pertanyaan;
 import esa.askerestful.entity.User;
-import esa.askerestful.model.LazyLoadResponse;
 import esa.askerestful.model.LazyLoadingRequest;
 import esa.askerestful.model.PertanyaanResponse;
 import esa.askerestful.repository.PertanyaanRepository;
 import esa.askerestful.repository.UserRepository;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.springframework.data.jpa.domain.Specification;
 
 
 @Service

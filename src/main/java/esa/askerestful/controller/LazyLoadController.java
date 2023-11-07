@@ -21,7 +21,7 @@ public class LazyLoadController {
             path = "/api/beranda",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public WebResponse<List<PertanyaanResponse>> beranda(
+    public WebPagingResponse<List<PertanyaanResponse>> beranda(
             User user,
             @RequestParam(value = "page" , required = false , defaultValue = "0")Integer page,
             @RequestParam(value = "size" , required = false , defaultValue = "30")Integer size
@@ -33,7 +33,7 @@ public class LazyLoadController {
 
         Page<PertanyaanResponse> pertanyaanResponses = lazyLoadingService.lazyLoading(user , request);
 
-        return WebResponse.<List<PertanyaanResponse>>builder()
+        return WebPagingResponse.<List<PertanyaanResponse>>builder()
                 .data(pertanyaanResponses.getContent())
                 .paging(PagingResponse.builder()
                         .totalPage(pertanyaanResponses.getTotalPages())

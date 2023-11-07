@@ -15,5 +15,4 @@ public class WebResponse<T>{
 
     private String errors;
 
-    private PagingResponse paging;
 }

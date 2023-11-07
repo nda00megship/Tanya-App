@@ -72,7 +72,7 @@ public class PertanyaanController {
             path = "/api/pertanyaans" ,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public WebResponse<List<PertanyaanResponse>> search(
+    public WebPagingResponse<List<PertanyaanResponse>> search(
             User user,
             @RequestParam(value = "header" , required = false) String header ,
             @RequestParam(value = "deskripsi" , required = false) String deskripsi ,
@@ -87,7 +87,7 @@ public class PertanyaanController {
                 .build();
 
         Page<PertanyaanResponse> pertanyaanResponses = pertanyaanService.search(user , request);
-        return WebResponse.<List<PertanyaanResponse>>builder()
+        return WebPagingResponse.<List<PertanyaanResponse>>builder()
                 .data(pertanyaanResponses.getContent())
                 .paging(PagingResponse.builder()
                         .currentPage(pertanyaanResponses.getNumber())
