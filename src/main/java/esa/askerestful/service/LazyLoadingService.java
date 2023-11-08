@@ -17,22 +17,13 @@ import java.util.List;
 
 @Service
 public class LazyLoadingService {
-
-    @Autowired
-    private MicroService microService;
-
     @Autowired
     private PertanyaanRepository pertanyaanRepository;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Transactional(readOnly = true)
     public Page<PertanyaanResponse> lazyLoading(User user , LazyLoadingRequest request){
         Specification<Pertanyaan> specification = (((root, query, criteriaBuilder) -> {
-
             query.orderBy(criteriaBuilder.desc(root.get("suka")));
-
 
             return criteriaBuilder.and();
         }));
@@ -56,6 +47,7 @@ public class LazyLoadingService {
                 .id(pertanyaan.getIdPertanyaan())
                 .header(pertanyaan.getHeader())
                 .deskripsi(pertanyaan.getDeskripsi())
+                .tanggal(pertanyaan.getTanggal())
                 .suka(pertanyaan.getSuka())
                 .build();
     }

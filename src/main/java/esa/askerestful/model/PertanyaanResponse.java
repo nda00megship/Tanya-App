@@ -2,6 +2,8 @@ package esa.askerestful.model;
 
 import lombok.*;
 
+import java.sql.Timestamp;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,4 +20,7 @@ public class PertanyaanResponse {
     private String deskripsi;
 
     private int suka;
+
+    private Timestamp tanggal;
+
 }

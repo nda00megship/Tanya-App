@@ -3,6 +3,7 @@ package esa.askerestful.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Data
@@ -23,6 +24,11 @@ public class Pertanyaan {
     private String deskripsi;
 
     private int suka;
+
+    private Timestamp tanggal;
+
+    @OneToMany(mappedBy = "pertanyaan")
+    private List<Gambar> gambar;
 
     @ManyToOne
     @JoinColumn(name = "idUser" , referencedColumnName = "id_user")

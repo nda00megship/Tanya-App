@@ -19,13 +19,13 @@
 --    deskripsi text not null ,
 --    tanggal timestamp
 --)engine InnoDB;
-create table store_gambar (
-    id_gambar varchar(255) primary key not null,
-    nama_gambar varchar(255) not null ,
-    path varchar(255) not null,
-    ext varchar(255) not null,
-    tanggal timestamp not null
-)engine InnoDB;
+--create table store_gambar (
+--    id_gambar varchar(255) primary key not null,
+--    nama_gambar varchar(255) not null ,
+--    path varchar(255) not null,
+--    ext varchar(255) not null,
+--    tanggal timestamp not null
+--)engine InnoDB;
 
 
 --insert into users (username , email , password)values (

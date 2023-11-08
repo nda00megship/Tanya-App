@@ -29,4 +29,8 @@ public class Gambar {
     @ManyToOne
     @JoinColumn(name = "idUser" , referencedColumnName = "id_user")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "idPertanyaan" , referencedColumnName = "id_pertanyaan")
+    private Pertanyaan pertanyaan;
 }

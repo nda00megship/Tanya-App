@@ -44,6 +44,7 @@ public class PertanyaanService {
         pertanyaan.setDeskripsi(req.getDeskripsi());
         pertanyaan.setSuka(0);
         pertanyaan.setUser(user);
+        pertanyaan.setTanggal(microService.currentTimestamp);
 
         pertanyaanRepo.save(pertanyaan);
 
@@ -61,6 +62,7 @@ public class PertanyaanService {
                 .header(pertanyaan.getHeader())
                 .deskripsi(pertanyaan.getDeskripsi())
                 .suka(pertanyaan.getSuka())
+                .tanggal(pertanyaan.getTanggal())
                 .build();
     }
 

@@ -1,6 +1,7 @@
 package esa.askerestful.service;
 
 import esa.askerestful.entity.Gambar;
+import esa.askerestful.entity.Pertanyaan;
 import esa.askerestful.entity.User;
 import esa.askerestful.model.CreateGambarRequest;
 import esa.askerestful.model.GambarResponse;
@@ -36,7 +37,7 @@ public class GambarService {
     @Autowired MicroService microService;
 
 
-    public GambarResponse uploadGambar(User user ,MultipartFile file)throws Exception {
+    public GambarResponse uploadGambar(User user , Pertanyaan pertanyaan , MultipartFile file)throws Exception {
         validateImageType(file);
 
         Gambar gambar = new Gambar();
@@ -46,6 +47,7 @@ public class GambarService {
         gambar.setExt(getFileExtension(file.getOriginalFilename()));
         gambar.setTanggal(microService.currentTimestamp);
         gambar.setUser(user);
+        gambar.setPertanyaan(pertanyaan);
         gambarRepository.save(gambar);
 
         String filePath = storageDirectory + File.separator + gambar.getNamaGambar() + gambar.getExt();

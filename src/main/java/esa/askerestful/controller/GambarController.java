@@ -1,6 +1,7 @@
 package esa.askerestful.controller;
 
 import esa.askerestful.entity.Gambar;
+import esa.askerestful.entity.Pertanyaan;
 import esa.askerestful.entity.User;
 import esa.askerestful.model.DownloadGambarResponse;
 import esa.askerestful.model.FileResponse;
@@ -27,9 +28,9 @@ public class GambarController {
     @PostMapping(
             path = "api/upload-gambar"
     )
-    public FileResponse<GambarResponse> uploadGambar(User user ,@RequestParam("gambar") MultipartFile file) {
+    public FileResponse<GambarResponse> uploadGambar(User user , Pertanyaan pertanyaan, @RequestParam("gambar") MultipartFile file) {
         try {
-            GambarResponse gambarResponse = gambarService.uploadGambar(user ,file);
+            GambarResponse gambarResponse = gambarService.uploadGambar(user ,pertanyaan, file);
             return new FileResponse<>(gambarResponse,HttpStatus.CREATED  );
         } catch (ResponseStatusException e) {
             throw e;
