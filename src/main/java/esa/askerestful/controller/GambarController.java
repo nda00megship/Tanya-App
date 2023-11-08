@@ -28,7 +28,10 @@ public class GambarController {
     @PostMapping(
             path = "api/upload-gambar"
     )
-    public FileResponse<GambarResponse> uploadGambar(User user , Pertanyaan pertanyaan, @RequestParam("gambar") MultipartFile file) {
+    public FileResponse<GambarResponse> uploadGambar(User user ,
+                                                     @RequestParam(value = "pertanyaan" , required = false)
+                                                     Pertanyaan pertanyaan,
+                                                     @RequestParam("gambar") MultipartFile file) {
         try {
             GambarResponse gambarResponse = gambarService.uploadGambar(user ,pertanyaan, file);
             return new FileResponse<>(gambarResponse,HttpStatus.CREATED  );

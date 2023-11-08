@@ -20,6 +20,7 @@ import org.springframework.web.server.UnsupportedMediaTypeStatusException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -34,7 +35,8 @@ public class GambarService {
     @Autowired
     private GambarRepository gambarRepository;
 
-    @Autowired MicroService microService;
+    @Autowired
+    private MicroService microService;
 
 
     public GambarResponse uploadGambar(User user , Pertanyaan pertanyaan , MultipartFile file)throws Exception {
@@ -47,7 +49,9 @@ public class GambarService {
         gambar.setExt(getFileExtension(file.getOriginalFilename()));
         gambar.setTanggal(microService.currentTimestamp);
         gambar.setUser(user);
-        gambar.setPertanyaan(pertanyaan);
+        if(Objects.nonNull(pertanyaan)){
+            gambar.setPertanyaan(pertanyaan);
+        }
         gambarRepository.save(gambar);
 
         String filePath = storageDirectory + File.separator + gambar.getNamaGambar() + gambar.getExt();
