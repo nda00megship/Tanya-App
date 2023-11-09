@@ -21,10 +21,9 @@ Response Body (Success) :
       "Header": "Apa itu programming",
       "deskripsi": "mungkin aku baru terjun ke dunia ini",
       "tanggal" : "12/30/2023 19:00:12",
-      "idGambar" : {
-        "idGambar1" : "gambar1",
-        "idGambar2" : "gambar2"
-      }
+      "gambar" : [
+        "gambar1" , "gambar2"
+      ]
     },
     {
       "id": "random String",

@@ -11,4 +11,6 @@ import lombok.*;
 public class GambarObjectResponse {
 
     private String idGambar;
+
+    private String idPertanyaan;
 }

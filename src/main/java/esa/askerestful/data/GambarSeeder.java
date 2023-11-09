@@ -30,12 +30,26 @@ public class GambarSeeder {
     public void seedDataGambar(){
         Random random = new Random();
 
-        for (int i = 0; i < 10; i++){
+        for (int i = 0; i < 15; i++){
             User user = userRepository.findById("user_" + i).orElseThrow();
-            Pertanyaan pertanyaan = pertanyaanRepository.findById("pertanyaan_"+0).orElseThrow();
+            Pertanyaan pertanyaan = pertanyaanRepository.findById("pertanyaan_"+i).orElseThrow();
             Gambar gambar = new Gambar();
             gambar.setIdGambar("id_gambar_"+i);
             gambar.setNamaGambar("gambar_" + i);
+            gambar.setPath("C:\\Users\\Esa\\Documents\\Spring project\\aske-restful\\storage\\");
+            gambar.setExt(".png");
+            gambar.setTanggal(microService.currentTimestamp);
+            gambar.setUser(user);
+            gambar.setPertanyaan(pertanyaan);
+            gambarRepository.save(gambar);
+
+        }
+        for (int i = 0; i < 10; i++){
+            User user = userRepository.findById("user_" + i).orElseThrow();
+            Pertanyaan pertanyaan = pertanyaanRepository.findById("pertanyaan_"+i).orElseThrow();
+            Gambar gambar = new Gambar();
+            gambar.setIdGambar("id_gambar_"+i +10);
+            gambar.setNamaGambar("gambar_" + i + 10);
             gambar.setPath("C:\\Users\\Esa\\Documents\\Spring project\\aske-restful\\storage\\");
             gambar.setExt(".png");
             gambar.setTanggal(microService.currentTimestamp);

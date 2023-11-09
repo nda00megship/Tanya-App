@@ -29,7 +29,7 @@ public class PertanyaanSeeder {
             pertanyaan.setIdPertanyaan("pertanyaan_" + i);
             pertanyaan.setHeader("Apa yang Anda pikirkan tentang masa depan?");
             pertanyaan.setDeskripsi("Berikan pandangan Anda tentang apa yang akan terjadi dalam 10 tahun ke depan Apakah anda tidak khawatir dengan masa yang akan datang seperti itu mungkin aku saja yang hanya mencoba tidak khwatir. dalam kondisi yang baik ini saya ingin meneruskan hidup saya.");
-            pertanyaan.setSuka(i);
+            pertanyaan.setSuka(i + 200);
             pertanyaan.setTanggal(microService.currentTimestamp);
             pertanyaan.setUser(user);
             pertanyaanRepository.save(pertanyaan);
