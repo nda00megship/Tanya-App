@@ -8,7 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,6 +46,52 @@ public class LazyLoadController {
                         .build()
                 )
                 .build();
+    }
+
+    @GetMapping(
+            path = "/api/beranda-gambar",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<List<PertanyaanResponse>> getPertanyaanGambar() {
+        List<Object[]> pertanyaan = lazyLoadingService.viewPertanyaan();
+        List<PertanyaanResponse> pertanyaanResponses = new ArrayList<>();
+
+        for (Object[] row : pertanyaan) {
+            String idPertanyaan = (String) row[0];
+            String header = (String) row[1];
+            String deskripsi = (String) row[2];
+            Integer suka = (Integer) row[3];
+            Timestamp tanggal = (Timestamp) row[4];
+//            for (Object[] rowGambar : gambar){
+//                String idGambar = (String) rowGambar[0];
+//                List<String> temp = new ArrayList<>();
+//                temp.add(idGambar);
+//                PertanyaanGambarResponse response =
+//                        new PertanyaanGambarResponse(idPertanyaan, header, deskripsi, suka, tanggal, temp);
+//                pertanyaanGambarResponses.add(response);
+//            }
+
+            PertanyaanResponse response = new PertanyaanResponse(idPertanyaan , header, deskripsi , suka , tanggal);
+            pertanyaanResponses.add(response);
+        }
+
+        return new ResponseEntity<>(pertanyaanResponses, HttpStatus.OK);
+    }
+
+    @GetMapping(
+            path = "/api/test",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<List<GambarObjectResponse>> test()throws Exception{
+        List<Object[]> gambar = lazyLoadingService.viewGambarPertanyaan();
+        List<GambarObjectResponse> responses = new ArrayList<>();
+
+        for (Object[] row : gambar){
+            String idGambar = (String) row[0];
+            GambarObjectResponse response = new GambarObjectResponse(idGambar);
+            responses.add(response);
+        }
+        return new ResponseEntity<>(responses , HttpStatus.OK);
     }
 
 }

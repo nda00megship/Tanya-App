@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -38,6 +39,8 @@ public class KomentarSeeder {
 
             for (int i = 0; i < numberOfComments; i++) {
                 User user = userRepository.findByUsername("esa" + random.nextInt(10)).orElseThrow();
+                Optional<Pertanyaan> pertanyaan1 = pertanyaanRepository.findFirstByUserAndId(user , "pertanyaan"+0);
+
                 Komentar komentar = new Komentar();
                 komentar.setIdKomentar("komen_" + i);
                 komentar.setTanggal(microService.currentTimestamp);

@@ -17,16 +17,24 @@ Response Body (Success) :
 {
   "data": [
     {
-      "id": "Encrypt String",
-      "header": "apakah pertanyaan 1 , ini adalah header",
-      "deskripsi": "Pertanyaan 1 , ini adalah deskripsi",
-      "suka": 10
+      "id": "random String",
+      "Header": "Apa itu programming",
+      "deskripsi": "mungkin aku baru terjun ke dunia ini",
+      "tanggal" : "12/30/2023 19:00:12",
+      "idGambar" : {
+        "idGambar1" : "gambar1",
+        "idGambar2" : "gambar2"
+      }
     },
     {
-      "id": "Encrypt String",
-      "header": "apakah pertanyaan 1 , ini adalah header",
-      "deskripsi": "Pertanyaan 2 adalah deskripsi",
-      "suka": 12
+      "id": "random String",
+      "Header": "Apa itu programming",
+      "deskripsi": "mungkin aku baru terjun ke dunia ini",
+      "tanggal" : "12/30/2023 19:00:12",
+      "idGambar" : {
+        "idGambar1" : "gambar1",
+        "idGambar2" : "gambar2"
+      }
     }
     // lanjut
   ],

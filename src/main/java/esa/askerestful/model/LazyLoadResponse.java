@@ -8,9 +8,11 @@ import lombok.*;
 @Builder
 @Getter
 @Setter
-public class LazyLoadResponse {
-    public int totalSize;
+public class LazyLoadResponse<T>{
 
-    public int size;
+    private T data;
+
+    private String errors;
+
 
 }

@@ -23,7 +23,7 @@ public class Pertanyaan {
 
     private String deskripsi;
 
-    private int suka;
+    private Integer suka;
 
     private Timestamp tanggal;
 

@@ -82,7 +82,8 @@ Response Body (Success) :
     "id" : "random String",
     "Header" : "Apa itu programming",
     "deskripsi" : "mungkin aku baru terjun ke dunia ini",
-    "like" : 0 
+    "like" : 0,
+    "tanggal" : "12/30/2023 19:00:12"
   }
 }
 ```
@@ -134,7 +135,12 @@ Response Body (Success) :
   "data": {
     "id": "random String",
     "Header": "Apa itu programming",
-    "deskripsi": "mungkin aku baru terjun ke dunia ini"
+    "deskripsi": "mungkin aku baru terjun ke dunia ini",
+    "tanggal" : "12/30/2023 19:00:12",
+    "idGambar" : {
+      "idGambar1" : "gambar1",
+      "idGambar2" : "gambar2"
+    }
   },
   "paging": {
     "currentPage": 0,

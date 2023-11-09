@@ -3,6 +3,7 @@ package esa.askerestful.model;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -10,7 +11,7 @@ import java.sql.Timestamp;
 @Builder
 @Getter
 @Setter
-public class PertanyaanResponse {
+public class PertanyaanGambarResponse {
 
 
     private String id;
@@ -22,5 +23,7 @@ public class PertanyaanResponse {
     private Integer suka;
 
     private Timestamp tanggal;
+
+    private GambarObjectResponse idGambar;
 
 }

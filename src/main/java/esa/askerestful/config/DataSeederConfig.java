@@ -1,5 +1,6 @@
 package esa.askerestful.config;
 
+import esa.askerestful.data.GambarSeeder;
 import esa.askerestful.data.KomentarSeeder;
 import esa.askerestful.data.PertanyaanSeeder;
 import esa.askerestful.data.UserSeeder;
@@ -35,15 +36,19 @@ public class DataSeederConfig {
     @Autowired
     private PertanyaanSeeder pertanyaanSeeder;
 
+    @Autowired
+    private GambarSeeder gambarSeeder;
+
     @PostConstruct
     public void seedData() {
         komentarRepository.deleteAll();
-        pertanyaanRepository.deleteAll();
         gambarRepository.deleteAll();
+        pertanyaanRepository.deleteAll();
         userRepository.deleteAll();
 
         userSeeder.seedDataUser();
         pertanyaanSeeder.seedPertanyaan();
         komentarSeeder.seedDataWithComments();
+        gambarSeeder.seedDataGambar();
     }
 }
