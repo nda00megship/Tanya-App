@@ -17,7 +17,7 @@ Response Body (Success) :
 {
   "data": [
     {
-      "id": "random String",
+      "id": "pertanyaan_1",
       "Header": "Apa itu programming",
       "deskripsi": "mungkin aku baru terjun ke dunia ini",
       "tanggal" : "12/30/2023 19:00:12",
@@ -26,14 +26,19 @@ Response Body (Success) :
       ],
       "komentar": [
         {
-          "idKomentar1" : "ini ada komentar 1",
-          "idKomentar2" : "ini ada komentar 2",
-          "idKomentar3" : "ini ada komentar 3"
+          "idKomentar1" : "komentar_1",
+          "nama" :  "Maulana",
+          "deskripsi": "ini ada komentar ke sekian"
+        } ,
+        {
+          "idKomentar1" : "komentar_2",
+          "nama" :  "Akbar",
+          "deskripsi": "ini ada komentar ke sekian"
         }
       ]
     },
     {
-      "id": "random String",
+      "id": "pertanyaan_1",
       "Header": "Apa itu programming",
       "deskripsi": "mungkin aku baru terjun ke dunia ini",
       "tanggal" : "12/30/2023 19:00:12",
@@ -42,13 +47,17 @@ Response Body (Success) :
       ],
       "komentar": [
         {
-          "idKomentar1" : "ini ada komentar 1",
-          "idKomentar2" : "ini ada komentar 2",
-          "idKomentar3" : "ini ada komentar 3"
+          "idKomentar1" : "komentar_1",
+          "nama" :  "Maulana",
+          "deskripsi": "ini ada komentar ke sekian"
+        } ,
+        {
+          "idKomentar1" : "komentar_2",
+          "nama" :  "Akbar",
+          "deskripsi": "ini ada komentar ke sekian"
         }
       ]
-      }
-    }
+    },
     // lanjut
   ],
   // Ini adalah nomor halaman yang diminta oleh pengguna.

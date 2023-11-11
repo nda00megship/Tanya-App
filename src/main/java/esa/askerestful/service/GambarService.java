@@ -26,7 +26,7 @@ import java.util.UUID;
 
 @Service
 public class GambarService {
-    private final String storageDirectory = "C:\\Users\\Esa\\Documents\\Spring project\\aske-restful\\storage";
+    private final String storageDirectory = "C:\\Users\\storage";
 
 
     @Autowired

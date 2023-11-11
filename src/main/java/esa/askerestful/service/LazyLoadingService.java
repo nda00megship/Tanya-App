@@ -128,27 +128,118 @@ public class LazyLoadingService {
 //        return pertanyaanResponses;
 //    }
 
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
+//    public List<PertanyaanGambarResponse> getAllPertanyaanWithGambarAndKomentar() {
+//        String sql = "SELECT " +
+//                "p.id_pertanyaan, " +
+//                "p.header, " +
+//                "p.deskripsi, " +
+//                "CASE " +
+//                "    WHEN TIMESTAMPDIFF(SECOND, p.tanggal, NOW()) < 60 THEN 'Beberapa detik yang lalu' " +
+//                "    WHEN TIMESTAMPDIFF(MINUTE, p.tanggal, NOW()) < 60 THEN CONCAT(TIMESTAMPDIFF(MINUTE, p.tanggal, NOW()), ' menit yang lalu') " +
+//                "    WHEN TIMESTAMPDIFF(HOUR, p.tanggal, NOW()) < 24 THEN CONCAT(TIMESTAMPDIFF(HOUR, p.tanggal, NOW()), ' jam yang lalu') " +
+//                "    WHEN TIMESTAMPDIFF(DAY, p.tanggal, NOW()) < 7 THEN CONCAT(TIMESTAMPDIFF(DAY, p.tanggal, NOW()), ' hari yang lalu') " +
+//                "    ELSE DATE_FORMAT(p.tanggal, '%Y-%m-%d %H:%i:%s') " +
+//                "END AS waktu, " +
+//                "p.suka, " +
+//                "GROUP_CONCAT(DISTINCT g.nama_gambar) AS gambar, " +
+//                "COALESCE( " +
+//                "    ( " +
+//                "        SELECT CONCAT('[', GROUP_CONCAT( " +
+//                "            JSON_OBJECT('idKomentar', k.id_komentar, " +
+//                "                        'nama', u.username, " +
+//                "                        'deskripsi', k.deskripsi)), ']') " +
+//                "        FROM komentar k " +
+//                "        LEFT JOIN users u ON k.id_user = u.id_user " +
+//                "        WHERE p.id_pertanyaan = k.id_pertanyaan " +
+//                "    ), " +
+//                "    '[]' " +
+//                ") AS komentar " +
+//                "FROM " +
+//                "    pertanyaan p " +
+//                "LEFT JOIN " +
+//                "    store_gambar g ON p.id_pertanyaan = g.id_pertanyaan " +
+//                "GROUP BY " +
+//                "    p.id_pertanyaan, p.header, p.deskripsi, p.suka " +
+//                "ORDER BY " +
+//                "    p.suka DESC";
+//
+//
+//        Query query = entityManager.createNativeQuery(sql);
+//
+//        List<PertanyaanGambarResponse> pertanyaanResponses = new ArrayList<>();
+//
+//        @SuppressWarnings("unchecked")
+//        List<Object[]> results = query.getResultList();
+//
+//        for (Object[] result : results) {
+//            String idPertanyaan = (String) result[0];
+//            String header = (String) result[1];
+//            String deskripsi = (String) result[2];
+//            String tanggal = (String) result[3];
+//            Integer suka = (Integer) result[4];
+//            List<String> gambar = result[5] != null
+//                    ? Arrays.asList(((String) result[5]).split(","))
+//                    : Collections.emptyList();
+//
+//            // Parsing komentar sebagai JSON Array menggunakan ObjectMapper (jackson-databind)
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            List<KomentarResponseL> komentar = Collections.emptyList();
+//            try {
+//                String komentarJson = (String) result[6];
+//                if (komentarJson != null && !komentarJson.isEmpty()) {
+//                    komentar = objectMapper.readValue(komentarJson, new TypeReference<List<KomentarResponseL>>() {});
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            PertanyaanGambarResponse response = new PertanyaanGambarResponse(idPertanyaan, header, deskripsi, tanggal, suka, gambar, komentar);
+//            pertanyaanResponses.add(response);
+//        }
+//
+//        return pertanyaanResponses;
+//    }
+//
+//}
+
+
+@Transactional(readOnly = true)
     public List<PertanyaanGambarResponse> getAllPertanyaanWithGambarAndKomentar() {
         String sql = "SELECT " +
                 "p.id_pertanyaan, " +
                 "p.header, " +
                 "p.deskripsi, " +
-                "p.tanggal, " +
+                "CASE " +
+                "    WHEN TIMESTAMPDIFF(SECOND, p.tanggal, NOW()) < 60 THEN 'Beberapa detik yang lalu' " +
+                "    WHEN TIMESTAMPDIFF(MINUTE, p.tanggal, NOW()) < 60 THEN CONCAT(TIMESTAMPDIFF(MINUTE, p.tanggal, NOW()), ' menit yang lalu') " +
+                "    WHEN TIMESTAMPDIFF(HOUR, p.tanggal, NOW()) < 24 THEN CONCAT(TIMESTAMPDIFF(HOUR, p.tanggal, NOW()), ' jam yang lalu') " +
+                "    WHEN TIMESTAMPDIFF(DAY, p.tanggal, NOW()) < 7 THEN CONCAT(TIMESTAMPDIFF(DAY, p.tanggal, NOW()), ' hari yang lalu') " +
+                "    ELSE DATE_FORMAT(p.tanggal, '%Y-%m-%d %H:%i:%s') " +
+                "END AS waktu, " +
                 "p.suka, " +
                 "GROUP_CONCAT(DISTINCT g.nama_gambar) AS gambar, " +
-                "IFNULL(" +
-                "    (" +
-                "        SELECT CONCAT('[', GROUP_CONCAT(JSON_OBJECT('idKomentar', k.id_komentar, 'deskripsi', k.deskripsi)), ']')" +
-                "        FROM komentar k" +
-                "        WHERE p.id_pertanyaan = k.id_pertanyaan" +
-                "    )," +
-                "    '[]'" +
+                "COALESCE( " +
+                "    ( " +
+                "        SELECT CONCAT('[', GROUP_CONCAT( " +
+                "            JSON_OBJECT('idKomentar', k.id_komentar, " +
+                "                        'nama', u.username, " +
+                "                        'deskripsi', k.deskripsi)), ']') " +
+                "        FROM komentar k " +
+                "        LEFT JOIN users u ON k.id_user = u.id_user " +
+                "        WHERE p.id_pertanyaan = k.id_pertanyaan " +
+                "    ), " +
+                "    '[]' " +
                 ") AS komentar " +
-                "FROM pertanyaan p " +
-                "LEFT JOIN store_gambar g ON p.id_pertanyaan = g.id_pertanyaan " +
-                "GROUP BY p.id_pertanyaan, p.header, p.deskripsi, p.tanggal, p.suka " +
-                "ORDER BY p.suka DESC";
+                "FROM " +
+                "    pertanyaan p " +
+                "LEFT JOIN " +
+                "    store_gambar g ON p.id_pertanyaan = g.id_pertanyaan " +
+                "GROUP BY " +
+                "    p.id_pertanyaan, p.header, p.deskripsi, p.suka " +
+                "ORDER BY " +
+                "    p.suka DESC";
+
 
         Query query = entityManager.createNativeQuery(sql);
 
@@ -161,9 +252,11 @@ public class LazyLoadingService {
             String idPertanyaan = (String) result[0];
             String header = (String) result[1];
             String deskripsi = (String) result[2];
-            Timestamp tanggal = (Timestamp) result[3];
+            String tanggal = (String) result[3];
             Integer suka = (Integer) result[4];
-            List<String> gambar = result[5] != null ? Arrays.asList(((String) result[5]).split(",")) : Collections.emptyList();
+            List<String> gambar = result[5] != null
+                    ? Arrays.asList(((String) result[5]).split(","))
+                    : Collections.emptyList();
 
             // Parsing komentar sebagai JSON Array menggunakan ObjectMapper (jackson-databind)
             ObjectMapper objectMapper = new ObjectMapper();
