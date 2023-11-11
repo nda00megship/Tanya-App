@@ -32,14 +32,10 @@ public class KomentarSeeder {
     public void seedDataWithComments() {
         List<Pertanyaan> pertanyaanList = pertanyaanRepository.findAll();
 
-        Random random = new Random();
 
-        for (Pertanyaan pertanyaan : pertanyaanList) {
-            int numberOfComments = random.nextInt(15);
-
-            for (int i = 0; i < numberOfComments; i++) {
-                User user = userRepository.findByUsername("esa" + random.nextInt(10)).orElseThrow();
-                Optional<Pertanyaan> pertanyaan1 = pertanyaanRepository.findFirstByUserAndId(user , "pertanyaan"+0);
+            for (int i = 0; i < 15; i++) {
+                User user = userRepository.findById("user_" + i).orElseThrow();
+                Pertanyaan pertanyaan = pertanyaanRepository.findById("pertanyaan_"+i).orElseThrow();
 
                 Komentar komentar = new Komentar();
                 komentar.setIdKomentar("komen_" + i);
@@ -49,7 +45,18 @@ public class KomentarSeeder {
                 komentar.setDeskripsi("Ini adalah komentar #" + i + " untuk pertanyaan ini.");
 
                 komentarRepository.save(komentar);
+
+                for (int j = 1; j < 4; j++){
+
+                    komentar.setIdKomentar("komen_" + i+j);
+                    komentar.setTanggal(microService.currentTimestamp);
+                    komentar.setUser(user);
+                    komentar.setPertanyaan(pertanyaan);
+                    komentar.setDeskripsi("Ini adalah komentar #" + i + " untuk pertanyaan ini.");
+                    komentarRepository.save(komentar);
+                }
             }
+
         }
     }
-}
+

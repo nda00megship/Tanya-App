@@ -92,7 +92,7 @@ public class LazyLoadController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<List<PertanyaanGambarResponse>> getAllPertanyaanWithGambar() {
-        List<PertanyaanGambarResponse> pertanyaanResponses = lazyLoadingService.getAllPertanyaanWithGambar();
+        List<PertanyaanGambarResponse> pertanyaanResponses = lazyLoadingService.getAllPertanyaanWithGambarAndKomentar();
         if (pertanyaanResponses.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

@@ -20,7 +20,8 @@ public class PertanyaanGambarResponse {
     private String header;
     private String deskripsi;
     private Timestamp tanggal;
-    private List<String> gambar;
     private Integer suka;
+    private List<String> gambar;
+    private List<KomentarResponseL> komentar;
 
 }

@@ -49,8 +49,8 @@ class AuthControllerTest {
     @BeforeEach
     void setUp(){
         komentarRepository.deleteAll();
-        pertanyaanRepository.deleteAll();
         gambarRepository.deleteAll();
+        pertanyaanRepository.deleteAll();
         userRepository.deleteAll();
 
     }

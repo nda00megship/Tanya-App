@@ -33,3 +33,28 @@
 --);
 --select * from pertanyaan;
 select * from store_gambar;
+
+
+SELECT
+    p.id_pertanyaan,
+    p.header,
+    p.deskripsi,
+    p.tanggal,
+    p.suka,
+    GROUP_CONCAT(DISTINCT g.nama_gambar) AS gambar,
+    IFNULL(
+        (
+            SELECT CONCAT('[', GROUP_CONCAT(JSON_OBJECT('idKomentar', k.id_komentar, 'deksripsi', k.deskripsi)), ']')
+            FROM komentar k
+            WHERE p.id_pertanyaan = k.id_pertanyaan
+        ),
+        '[]'
+    ) AS komentar
+FROM
+    pertanyaan p
+LEFT JOIN
+    store_gambar g ON p.id_pertanyaan = g.id_pertanyaan
+GROUP BY
+    p.id_pertanyaan, p.header, p.deskripsi, p.tanggal, p.suka
+ORDER BY
+    p.suka DESC;

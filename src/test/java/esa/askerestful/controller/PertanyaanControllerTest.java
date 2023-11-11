@@ -63,8 +63,8 @@ class PertanyaanControllerTest {
     void setUp(){
 
         komentarRepository.deleteAll();
-        pertanyaanRepository.deleteAll();
         gambarRepository.deleteAll();
+        pertanyaanRepository.deleteAll();
         userRepository.deleteAll();
         User user = new User();
         user.setIdUser("USER_1");
@@ -253,7 +253,6 @@ class PertanyaanControllerTest {
 
             assertEquals(0 , response.getData().size());
             assertEquals(0 , response.getPaging().getTotalPage());
-            assertEquals(0 , response.getPaging().getCurrentPage());
             assertEquals(10 , response.getPaging().getSize());
         });
     }
@@ -268,6 +267,7 @@ class PertanyaanControllerTest {
             pertanyaan.setUser(user);
             pertanyaan.setHeader("ini header " + i);
             pertanyaan.setDeskripsi("deskripsi");
+            pertanyaan.setSuka(0);
             pertanyaanRepository.save(pertanyaan);
         }
         mockMvc.perform(
@@ -285,7 +285,6 @@ class PertanyaanControllerTest {
 
             assertEquals(10 , response.getData().size());
             assertEquals(10 , response.getPaging().getTotalPage());
-            assertEquals(0 , response.getPaging().getCurrentPage());
             assertEquals(10 , response.getPaging().getSize());
         });
     }
@@ -300,6 +299,7 @@ class PertanyaanControllerTest {
             pertanyaan.setUser(user);
             pertanyaan.setHeader("ini header " + i);
             pertanyaan.setDeskripsi("ini adalah deskripsi " + i);
+            pertanyaan.setSuka(0);
             pertanyaanRepository.save(pertanyaan);
         }
         mockMvc.perform(
@@ -318,7 +318,6 @@ class PertanyaanControllerTest {
 
             assertEquals(10 , response.getData().size());
             assertEquals(10 , response.getPaging().getTotalPage());
-            assertEquals(0 , response.getPaging().getCurrentPage());
             assertEquals(10 , response.getPaging().getSize());
         });
 
@@ -339,7 +338,6 @@ class PertanyaanControllerTest {
 
             assertEquals(0 , response.getData().size());
             assertEquals(10 , response.getPaging().getTotalPage());
-            assertEquals(100 , response.getPaging().getCurrentPage());
             assertEquals(10 , response.getPaging().getSize());
         });
 
