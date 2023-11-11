@@ -20,7 +20,7 @@ Response Body (Success) :
       "id": "pertanyaan_1",
       "Header": "Apa itu programming",
       "deskripsi": "mungkin aku baru terjun ke dunia ini",
-      "tanggal" : "12/30/2023 19:00:12",
+      "tanggal" : "1 menit yang lalu",
       "gambar" : [
         "gambar1" , "gambar2"
       ],
@@ -41,7 +41,7 @@ Response Body (Success) :
       "id": "pertanyaan_1",
       "Header": "Apa itu programming",
       "deskripsi": "mungkin aku baru terjun ke dunia ini",
-      "tanggal" : "12/30/2023 19:00:12",
+      "tanggal" : "2 menit yang lalu",
       "gambar" : [
         "gambar1" , "gambar2"
       ],

@@ -12,4 +12,7 @@ public interface KomentarRepository extends JpaRepository<Komentar ,String> {
 
     @Query("SELECT k FROM Komentar k WHERE k.user = :user AND k.idKomentar = :idKomentar")
     Optional<Komentar> findFirstByUserAndId(User user , String idKomentar);
+
+    @Query("SELECT k FROM Komentar k WHERE k.user = :user AND k.pertanyaan = :pertanyaan")
+    Optional<Komentar> findFirstByUserAndPertanyaan(User user , Pertanyaan pertanyaan);
 }

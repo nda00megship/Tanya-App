@@ -1,5 +1,6 @@
 package esa.askerestful.controller;
 
+import esa.askerestful.entity.Komentar;
 import esa.askerestful.entity.Pertanyaan;
 import esa.askerestful.entity.User;
 import esa.askerestful.model.CreateKomentarRequest;
@@ -24,6 +25,18 @@ public class KomentarController {
     public WebResponse<KomentarResponse> create (User user  , @RequestBody CreateKomentarRequest request)
     {
     KomentarResponse komentarResponse =  komentarService.create(user , request );
+
+        return WebResponse.<KomentarResponse>builder()
+                .data(komentarResponse)
+                .build();
+    }
+
+    @GetMapping(
+            path = "/api/komentar/{idKomentar}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<KomentarResponse> get(User user , @PathVariable("idKomentar") String id){
+        KomentarResponse komentarResponse = komentarService.get(user , id);
 
         return WebResponse.<KomentarResponse>builder()
                 .data(komentarResponse)
