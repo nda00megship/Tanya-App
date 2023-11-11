@@ -24,7 +24,7 @@ public class PertanyaanSeeder {
 
     public void seedPertanyaan(){
         for (int i = 0 ; i < 15 ; i++){
-            User user = userRepository.findByUsername("esa0").orElseThrow();
+            User user = userRepository.findByUsername("esa" + i).orElseThrow();
             Pertanyaan pertanyaan = new Pertanyaan();
             pertanyaan.setIdPertanyaan("pertanyaan_" + i);
             pertanyaan.setHeader("Apa yang Anda pikirkan tentang masa depan?");

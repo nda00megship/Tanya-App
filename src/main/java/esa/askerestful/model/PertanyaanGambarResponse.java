@@ -17,6 +17,7 @@ import java.util.List;
 public class PertanyaanGambarResponse {
 
     private String id;
+    private String username;
     private String header;
     private String deskripsi;
     private String tanggal;
