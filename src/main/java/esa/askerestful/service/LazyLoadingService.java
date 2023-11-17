@@ -205,27 +205,29 @@ public class LazyLoadingService {
 
 
 @Transactional(readOnly = true)
-    public List<PertanyaanGambarResponse> getAllPertanyaanWithGambarAndKomentar() {
+    public List<PertanyaanGambarResponse> getAllPertanyaanWithGambarAndKomentar(int pageNumber, int pageSize) {
     String sql = "SELECT " +
-            "p.id_pertanyaan, " +
-            "u.username, " +
-            "p.header, " +
-            "p.deskripsi, " +
+            "p.id_pertanyaan, " + //0
+            "u.username, " + // 1
+            "p.header, " + // 2
+            "p.deskripsi, "+ // 3
             "CASE " +
             "    WHEN TIMESTAMPDIFF(SECOND, p.tanggal, NOW()) < 60 THEN 'Beberapa detik yang lalu' " +
             "    WHEN TIMESTAMPDIFF(MINUTE, p.tanggal, NOW()) < 60 THEN CONCAT(TIMESTAMPDIFF(MINUTE, p.tanggal, NOW()), ' menit yang lalu') " +
             "    WHEN TIMESTAMPDIFF(HOUR, p.tanggal, NOW()) < 24 THEN CONCAT(TIMESTAMPDIFF(HOUR, p.tanggal, NOW()), ' jam yang lalu') " +
             "    WHEN TIMESTAMPDIFF(DAY, p.tanggal, NOW()) < 7 THEN CONCAT(TIMESTAMPDIFF(DAY, p.tanggal, NOW()), ' hari yang lalu') " +
             "    ELSE DATE_FORMAT(p.tanggal, '%Y-%m-%d %H:%i:%s') " +
-            "END AS waktu, " +
-            "p.suka, " +
-            "GROUP_CONCAT(DISTINCT g.nama_gambar) AS gambar, " +
+            "END AS waktu, " + //4
+            "p.suka, " + // 5
+            "GROUP_CONCAT(DISTINCT g.nama_gambar) AS gambar, " + // 6
+            "COUNT(k.id_komentar) AS totalKomentar, " + // 7
             "COALESCE( " +
             "    ( " +
-            "        SELECT CONCAT('[', GROUP_CONCAT( " +
+            "        SELECT CONCAT('[', GROUP_CONCAT( " + // 8
             "            JSON_OBJECT('idKomentar', k.id_komentar, " +
             "                        'nama', u.username, " +
-            "                        'deskripsi', k.deskripsi)), ']') " +
+            "                        'deskripsi', k.deskripsi) " +
+            "        ), ']') " +
             "        FROM komentar k " +
             "        LEFT JOIN users u ON k.id_user = u.id_user " +
             "        WHERE p.id_pertanyaan = k.id_pertanyaan " +
@@ -238,16 +240,20 @@ public class LazyLoadingService {
             "    store_gambar g ON p.id_pertanyaan = g.id_pertanyaan " +
             "LEFT JOIN " +
             "    users u ON p.id_user = u.id_user " +
+            "LEFT JOIN " +
+            "    komentar k ON p.id_pertanyaan = k.id_pertanyaan " +
             "GROUP BY " +
             "    p.id_pertanyaan, p.header, p.deskripsi, p.suka " +
             "ORDER BY " +
-            "    p.suka DESC";
+            "    p.suka DESC " +
+            "LIMIT :pageNumber, :pageSize";
+
+    Query query = entityManager.createNativeQuery(sql)
+            .setParameter("pageNumber", (pageNumber - 1) * pageSize)
+            .setParameter("pageSize", pageSize);
 
 
-
-        Query query = entityManager.createNativeQuery(sql);
-
-        List<PertanyaanGambarResponse> pertanyaanResponses = new ArrayList<>();
+    List<PertanyaanGambarResponse> pertanyaanResponses = new ArrayList<>();
 
         @SuppressWarnings("unchecked")
         List<Object[]> results = query.getResultList();
@@ -259,15 +265,16 @@ public class LazyLoadingService {
             String deskripsi = (String) result[3];
             String tanggal = (String) result[4];
             Integer suka = (Integer) result[5];
+
             List<String> gambar = result[6] != null
                     ? Arrays.asList(((String) result[6]).split(","))
                     : Collections.emptyList();
-
+            Long totalKomentar = (Long) result[7];
             // Parsing komentar sebagai JSON Array menggunakan ObjectMapper (jackson-databind)
             ObjectMapper objectMapper = new ObjectMapper();
             List<KomentarResponseL> komentar = Collections.emptyList();
             try {
-                String komentarJson = (String) result[7];
+                String komentarJson = (String) result[8];
                 if (komentarJson != null && !komentarJson.isEmpty()) {
                     komentar = objectMapper.readValue(komentarJson, new TypeReference<List<KomentarResponseL>>() {});
                 }
@@ -275,7 +282,17 @@ public class LazyLoadingService {
                 e.printStackTrace();
             }
 
-            PertanyaanGambarResponse response = new PertanyaanGambarResponse(idPertanyaan,username , header, deskripsi, tanggal, suka, gambar, komentar);
+            PertanyaanGambarResponse response =
+                    new PertanyaanGambarResponse(
+                            idPertanyaan,
+                            username ,
+                            header,
+                            deskripsi,
+                            tanggal,
+                            suka,
+                            gambar,
+                            totalKomentar,
+                            komentar);
             pertanyaanResponses.add(response);
         }
 

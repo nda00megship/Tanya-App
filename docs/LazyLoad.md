@@ -24,6 +24,7 @@ Response Body (Success) :
       "gambar" : [
         "gambar1" , "gambar2"
       ],
+      "totalKomentar" : 2,
       "komentar": [
         {
           "idKomentar1" : "komentar_1",
@@ -45,6 +46,7 @@ Response Body (Success) :
       "gambar" : [
         "gambar1" , "gambar2"
       ],
+      "totalKomentar" : 2,
       "komentar": [
         {
           "idKomentar1" : "komentar_1",

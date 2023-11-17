@@ -23,6 +23,7 @@ public class PertanyaanGambarResponse {
     private String tanggal;
     private Integer suka;
     private List<String> gambar;
+    private Long totalKomentar;
     private List<KomentarResponseL> komentar;
 
 }

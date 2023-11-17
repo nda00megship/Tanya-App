@@ -90,6 +90,7 @@ public class PertanyaanController {
         return WebPagingResponse.<List<PertanyaanResponse>>builder()
                 .data(pertanyaanResponses.getContent())
                 .paging(PagingResponse.builder()
+                        .currentPage(pertanyaanResponses.getNumber())
                         .totalPage(pertanyaanResponses.getTotalPages())
                         .size(pertanyaanResponses.getSize())
                         .build())

@@ -40,7 +40,7 @@ public class LazyLoadController {
                 .data(pertanyaanResponses.getContent())
                 .paging(PagingResponse.builder()
                         .totalPage(pertanyaanResponses.getTotalPages())
-                        .size(pertanyaanResponses.getSize())
+                        .currentPage(pertanyaanResponses.getSize())
                         .build()
                 )
                 .build();
@@ -91,8 +91,11 @@ public class LazyLoadController {
             path = "/api/beranda-test",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<List<PertanyaanGambarResponse>> getAllPertanyaanWithGambar() {
-        List<PertanyaanGambarResponse> pertanyaanResponses = lazyLoadingService.getAllPertanyaanWithGambarAndKomentar();
+    public ResponseEntity<List<PertanyaanGambarResponse>> getAllPertanyaanWithGambar(
+            @RequestParam(defaultValue = "1" , required = false , value = "currentPage") int currentPage,
+            @RequestParam(defaultValue = "10" , required = false, value = "itemPerPage") int itemsPerPage
+    ) {
+        List<PertanyaanGambarResponse> pertanyaanResponses = lazyLoadingService.getAllPertanyaanWithGambarAndKomentar(currentPage, itemsPerPage);
         if (pertanyaanResponses.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

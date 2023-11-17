@@ -10,5 +10,7 @@ public class PagingResponse {
 
     private Integer totalPage;
 
+    private Integer currentPage;
+
     private Integer size;
 }
