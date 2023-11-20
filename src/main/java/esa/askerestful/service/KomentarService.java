@@ -36,7 +36,7 @@ public class KomentarService {
     public KomentarResponse create(User user , CreateKomentarRequest request){
         validationService.validate(request);
 
-        Pertanyaan pertanyaan = pertanyaanRepository.findFirstByUserAndId(user , request.getIdPertanyaan())
+        Pertanyaan pertanyaan = pertanyaanRepository.findPertanyaanById(request.getIdPertanyaan())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND ,
                         "pertanyaan not found"
