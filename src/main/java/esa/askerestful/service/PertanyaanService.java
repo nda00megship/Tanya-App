@@ -48,12 +48,7 @@ public class PertanyaanService {
 
         pertanyaanRepo.save(pertanyaan);
 
-        return PertanyaanResponse.builder()
-                .id(pertanyaan.getIdPertanyaan())
-                .header(pertanyaan.getHeader())
-                .deskripsi(pertanyaan.getDeskripsi())
-                .suka(pertanyaan.getSuka())
-                .build();
+        return toPertanyaanResponse(pertanyaan);
     }
 
     private PertanyaanResponse toPertanyaanResponse(Pertanyaan pertanyaan){

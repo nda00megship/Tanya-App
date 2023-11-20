@@ -21,7 +21,7 @@ public class MicroService {
     }
 
     public String idPertanyaanGenerator(){
-        String pertanyaanId = "PERTANYAAN_" + String.format("%04d" , currentIdPertanyaan);
+        String pertanyaanId = "prt_" + String.format("%04d" , currentIdPertanyaan);
         currentIdPertanyaan++;
         return pertanyaanId;
     }
