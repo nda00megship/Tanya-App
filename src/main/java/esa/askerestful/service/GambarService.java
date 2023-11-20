@@ -88,14 +88,16 @@ public class GambarService {
 
 
     public byte[] getGambar(User user ,String fileName)throws  Exception {
-        Optional<Gambar> gambar = gambarRepository.findByNameAndUser(user  , fileName);
+        validationService.validate(user);
+        Optional<Gambar> gambar = gambarRepository.findByNameAndUser(fileName);
         String filePath = gambar.get().getPath() + "\\" + gambar.get().getNamaGambar() + gambar.get().getExt();
         byte[] images =  Files.readAllBytes(new File(filePath).toPath());
         return images;
     }
 
     public void deleteGambar(User user , String fileName)throws Exception{
-        Optional<Gambar> gambar = gambarRepository.findByNameAndUser(user , fileName);
+        validationService.validate(user);
+        Optional<Gambar> gambar = gambarRepository.findByNameAndUser(fileName);
         if (gambar.isPresent()){
             String filePath = gambar.get().getPath() + "\\" + gambar.get().getNamaGambar() + gambar.get().getExt();
             File file = new File(filePath);

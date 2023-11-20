@@ -16,6 +16,7 @@ import java.util.Random;
 @Service
 public class GambarSeeder {
 
+    private final String path = "C:\\Users\\Storage";
     @Autowired
     private GambarRepository gambarRepository;
     @Autowired
@@ -36,7 +37,7 @@ public class GambarSeeder {
             Gambar gambar = new Gambar();
             gambar.setIdGambar("id_gambar_"+i);
             gambar.setNamaGambar("gambar_" + i);
-            gambar.setPath("C:\\Users\\Esa\\Documents\\Spring project\\aske-restful\\storage\\");
+            gambar.setPath(path);
             gambar.setExt(".png");
             gambar.setTanggal(microService.currentTimestamp);
             gambar.setUser(user);
@@ -46,11 +47,11 @@ public class GambarSeeder {
         }
         for (int i = 0; i < 10; i++){
             User user = userRepository.findById("user_" + i).orElseThrow();
-            Pertanyaan pertanyaan = pertanyaanRepository.findById("pertanyaan_"+i).orElseThrow();
+            Pertanyaan pertanyaan = pertanyaanRepository.findById("pertanyaan_"+(i+10)).orElseThrow();
             Gambar gambar = new Gambar();
             gambar.setIdGambar("id_gambar_"+i +10);
             gambar.setNamaGambar("gambar_" + i + 10);
-            gambar.setPath("C:\\Users\\Esa\\Documents\\Spring project\\aske-restful\\storage\\");
+            gambar.setPath(path);
             gambar.setExt(".png");
             gambar.setTanggal(microService.currentTimestamp);
             gambar.setUser(user);
