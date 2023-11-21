@@ -24,6 +24,7 @@ public class PertanyaanGambarResponse {
     private Integer suka;
     private List<String> gambar;
     private Long totalKomentar;
+    private Long totalSize;
     private List<KomentarResponseL> komentar;
 
 }

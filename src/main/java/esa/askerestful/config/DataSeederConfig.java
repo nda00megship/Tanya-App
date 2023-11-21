@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class DataSeederConfig {
+public class DataSeederConfig{
 
     @Autowired
     private UserRepository userRepository;

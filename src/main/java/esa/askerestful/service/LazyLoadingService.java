@@ -220,10 +220,17 @@ public class LazyLoadingService {
             "END AS waktu, " + //4
             "p.suka, " + // 5
             "GROUP_CONCAT(DISTINCT g.nama_gambar) AS gambar, " + // 6
-            "COUNT(k.id_komentar) AS totalKomentar, " + // 7
+            "COUNT(DISTINCT k.id_komentar) AS totalKomentar, " + // 7
+            "(" +
+            "    SELECT COUNT(DISTINCT p.id_pertanyaan) " +
+            "    FROM pertanyaan p " +
+            "    LEFT JOIN store_gambar g ON p.id_pertanyaan = g.id_pertanyaan " +
+            "    LEFT JOIN users u ON p.id_user = u.id_user " +
+            "    LEFT JOIN komentar k ON p.id_pertanyaan = k.id_pertanyaan" +
+            ") AS totalSize, " + // 8
             "COALESCE( " +
             "    ( " +
-            "        SELECT CONCAT('[', GROUP_CONCAT( " + // 8
+            "        SELECT CONCAT('[', GROUP_CONCAT( " + // 9
             "            JSON_OBJECT('idKomentar', k.id_komentar, " +
             "                        'nama', u.username, " +
             "                        'deskripsi', k.deskripsi) " +
@@ -270,11 +277,12 @@ public class LazyLoadingService {
                     ? Arrays.asList(((String) result[6]).split(","))
                     : Collections.emptyList();
             Long totalKomentar = (Long) result[7];
+            Long totalSize = (Long) result[8]; 
             // Parsing komentar sebagai JSON Array menggunakan ObjectMapper (jackson-databind)
             ObjectMapper objectMapper = new ObjectMapper();
             List<KomentarResponseL> komentar = Collections.emptyList();
             try {
-                String komentarJson = (String) result[8];
+                String komentarJson = (String) result[9];
                 if (komentarJson != null && !komentarJson.isEmpty()) {
                     komentar = objectMapper.readValue(komentarJson, new TypeReference<List<KomentarResponseL>>() {});
                 }
@@ -292,6 +300,7 @@ public class LazyLoadingService {
                             suka,
                             gambar,
                             totalKomentar,
+                            totalSize,
                             komentar);
             pertanyaanResponses.add(response);
         }

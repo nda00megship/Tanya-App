@@ -26,7 +26,7 @@ public class GambarController {
     private GambarService gambarService;
 
     @PostMapping(
-            path = "api/upload-gambar"
+            path = "/api/upload-gambar"
     )
     public FileResponse<GambarResponse> uploadGambar(User user ,
                                                      @RequestParam(value = "pertanyaan" , required = false)
