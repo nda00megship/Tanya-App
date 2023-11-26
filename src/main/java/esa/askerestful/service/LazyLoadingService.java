@@ -255,6 +255,7 @@ public class LazyLoadingService {
             "    p.suka DESC " +
             "LIMIT :pageNumber, :pageSize";
 
+
     Query query = entityManager.createNativeQuery(sql)
             .setParameter("pageNumber", (pageNumber - 1) * pageSize)
             .setParameter("pageSize", pageSize);
@@ -277,7 +278,7 @@ public class LazyLoadingService {
                     ? Arrays.asList(((String) result[6]).split(","))
                     : Collections.emptyList();
             Long totalKomentar = (Long) result[7];
-            Long totalSize = (Long) result[8]; 
+            Long totalSize = (Long) result[8];
             // Parsing komentar sebagai JSON Array menggunakan ObjectMapper (jackson-databind)
             ObjectMapper objectMapper = new ObjectMapper();
             List<KomentarResponseL> komentar = Collections.emptyList();

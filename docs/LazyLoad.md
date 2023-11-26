@@ -27,9 +27,21 @@ Response Body (Success) :
       "totalKomentar" : 2,
       "komentar": [
         {
-          "idKomentar1" : "komentar_1",
+          "idKomentar" : "komentar_1",
           "nama" :  "Maulana",
-          "deskripsi": "ini ada komentar ke sekian"
+          "deskripsi": "ini ada komentar ke sekian",
+          "balesan" : [
+            {
+              "idKomentar" : "balasan_1",
+              "nama" :  "Maulana",
+              "deskripsi": "ini ada komentar ke sekian"
+            },
+            {
+              "idKomentar" : "balasan_2",
+              "nama" :  "Maulana",
+              "deskripsi": "ini ada komentar ke sekian"
+            }
+          ]
         } ,
         {
           "idKomentar1" : "komentar_2",

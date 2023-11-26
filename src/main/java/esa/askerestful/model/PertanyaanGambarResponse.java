@@ -26,5 +26,4 @@ public class PertanyaanGambarResponse {
     private Long totalKomentar;
     private Long totalSize;
     private List<KomentarResponseL> komentar;
-
 }
