@@ -17,6 +17,14 @@ public class PertanyaanController {
     @Autowired
     private PertanyaanService pertanyaanService;
 
+
+    @GetMapping(
+            {"/" , "/home" , "/status"}
+    )
+    public String web(){
+        return "applikasi sedang berjalan";
+    }
+
     @PostMapping(
             path = "/api/pertanyaan",
             consumes = MediaType.APPLICATION_JSON_VALUE,
