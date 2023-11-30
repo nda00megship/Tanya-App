@@ -16,7 +16,7 @@ import java.util.Random;
 @Service
 public class GambarSeeder {
 
-    private final String path = "C:\\Users\\Storage";
+    private final String path = "folder/";
     @Autowired
     private GambarRepository gambarRepository;
     @Autowired
@@ -37,8 +37,7 @@ public class GambarSeeder {
             Gambar gambar = new Gambar();
             gambar.setIdGambar("id_gambar_"+i);
             gambar.setNamaGambar("gambar_" + i);
-            gambar.setPath(path);
-            gambar.setExt(".png");
+            gambar.setPath(path + "gambar_" + (i) + ".png");
             gambar.setTanggal(microService.currentTimestamp);
             gambar.setUser(user);
             gambar.setPertanyaan(pertanyaan);
@@ -51,8 +50,7 @@ public class GambarSeeder {
             Gambar gambar = new Gambar();
             gambar.setIdGambar("id_gambar_"+i +10);
             gambar.setNamaGambar("gambar_" + i + 10);
-            gambar.setPath(path);
-            gambar.setExt(".png");
+            gambar.setPath(path + "gambar_" + (i + 10) + ".png");
             gambar.setTanggal(microService.currentTimestamp);
             gambar.setUser(user);
             gambar.setPertanyaan(pertanyaan);

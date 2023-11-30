@@ -26,8 +26,6 @@ import java.util.UUID;
 
 @Service
 public class GambarService {
-    private final String storageDirectory = "C:\\Users\\storage";
-
 
     @Autowired
     private ValidationService validationService;
@@ -39,14 +37,13 @@ public class GambarService {
     private MicroService microService;
 
 
-    public GambarResponse uploadGambar(User user , Pertanyaan pertanyaan , MultipartFile file)throws Exception {
-        validateImageType(file);
+    public GambarResponse uploadGambar(User user , Pertanyaan pertanyaan, CreateGambarRequest gambarRequest)throws Exception {
+        validationService.validate(pertanyaan);
 
         Gambar gambar = new Gambar();
         gambar.setIdGambar(UUID.randomUUID().toString());
-        gambar.setNamaGambar(microService.idGambarGenerator());
-        gambar.setPath(storageDirectory);
-        gambar.setExt(getFileExtension(file.getOriginalFilename()));
+        gambar.setNamaGambar(gambarRequest.getNamaGambar());
+        gambar.setPath(gambarRequest.getPath());
         gambar.setTanggal(microService.currentTimestamp);
         gambar.setUser(user);
         if(Objects.nonNull(pertanyaan)){
@@ -54,64 +51,23 @@ public class GambarService {
         }
         gambarRepository.save(gambar);
 
-        String filePath = storageDirectory + File.separator + gambar.getNamaGambar() + gambar.getExt();
-        try {
-            file.transferTo(new File(filePath));
-        } catch (IOException e) {
-             throw new ResponseStatusException(HttpStatus.CONFLICT , "Gagal mengunggah gambar", e);
-        }
+        return GambarResponse.builder()
+                .namaGambar(gambar.getNamaGambar())
+                .tanggal(gambar.getTanggal())
+                .build();
+    }
+
+    public GambarResponse getGambar(String namaGambar , User user){
+        Gambar gambar = gambarRepository.findByName(namaGambar)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND ,
+                        "gambar tidak ditemukan"
+                ));
 
         return GambarResponse.builder()
                 .namaGambar(gambar.getNamaGambar())
                 .path(gambar.getPath())
-                .ext(gambar.getExt())
                 .tanggal(gambar.getTanggal())
                 .build();
-    }
-    private String getFileExtension(String fileName) {
-        if (fileName != null) {
-            int lastDotIndex = fileName.lastIndexOf(".");
-            if (lastDotIndex != -1) {
-                return fileName.substring(lastDotIndex);
-            }
-        }
-        return "";
-    }
-
-    private void validateImageType(MultipartFile file) {
-        String contentType = file.getContentType();
-        if (contentType == null ||
-                !(contentType.equals("image/png") || contentType.equals("image/jpeg") || contentType.equals("image/jpg"))) {
-            throw new ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE , "format image harus sesuai");
-        }
-    }
-
-
-    public byte[] getGambar(User user ,String fileName)throws  Exception {
-        validationService.validate(user);
-        Optional<Gambar> gambar = gambarRepository.findByNameAndUser(fileName);
-        String filePath = gambar.get().getPath() + "\\" + gambar.get().getNamaGambar() + gambar.get().getExt();
-        byte[] images =  Files.readAllBytes(new File(filePath).toPath());
-        return images;
-    }
-
-    public void deleteGambar(User user , String fileName)throws Exception{
-        validationService.validate(user);
-        Optional<Gambar> gambar = gambarRepository.findByNameAndUser(fileName);
-        if (gambar.isPresent()){
-            String filePath = gambar.get().getPath() + "\\" + gambar.get().getNamaGambar() + gambar.get().getExt();
-            File file = new File(filePath);
-
-            if (file.exists()){
-                if (file.delete()){
-                    gambarRepository.delete(gambar.get());
-                }else {
-                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED , "gagal terhapus");
-                }
-            }else {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND , "gambar not found");
-            }
-        }
-
     }
 }

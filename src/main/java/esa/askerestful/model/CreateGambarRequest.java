@@ -23,8 +23,5 @@ public class CreateGambarRequest {
     @Size(max = 100)
     private String path;
 
-    @NotBlank
-    @Size(max = 10)
-    private String ext;
 
 }

@@ -18,7 +18,5 @@ public class GambarResponse {
 
     private String path;
 
-    private String ext;
-
     private Timestamp tanggal;
 }

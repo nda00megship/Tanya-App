@@ -22,8 +22,6 @@ public class Gambar {
 
     private String path;
 
-    private String ext;
-
     private Timestamp tanggal;
 
     @ManyToOne

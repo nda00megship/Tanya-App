@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface GambarRepository extends JpaRepository<Gambar ,String> {
 
     @Query("SELECT g FROM Gambar g WHERE g.namaGambar = :fileName ")
-    Optional<Gambar> findByNameAndUser(String fileName);
+    Optional<Gambar> findByName(String fileName);
 }
