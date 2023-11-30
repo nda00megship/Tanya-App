@@ -16,7 +16,7 @@ import java.util.Random;
 @Service
 public class GambarSeeder {
 
-    private final String path = "folder/";
+    private final String path = "storage/";
     @Autowired
     private GambarRepository gambarRepository;
     @Autowired
