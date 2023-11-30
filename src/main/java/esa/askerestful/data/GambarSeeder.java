@@ -50,7 +50,7 @@ public class GambarSeeder {
             Gambar gambar = new Gambar();
             gambar.setIdGambar("id_gambar_"+i +10);
             gambar.setNamaGambar("gambar_" + i + 10);
-            gambar.setPath(path + "gambar_" + (i + 10) + ".png");
+            gambar.setPath(path + "gambar_" + i + 10 + ".png");
             gambar.setTanggal(microService.currentTimestamp);
             gambar.setUser(user);
             gambar.setPertanyaan(pertanyaan);
