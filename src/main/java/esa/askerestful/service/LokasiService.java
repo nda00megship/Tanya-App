@@ -3,9 +3,13 @@ package esa.askerestful.service;
 import esa.askerestful.entity.KredensialLokasi;
 import esa.askerestful.entity.User;
 import esa.askerestful.model.CreateKredLokasiReq;
+import esa.askerestful.model.KredLokasiResp;
 import esa.askerestful.repository.LokasiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.UUID;
 
@@ -21,10 +25,9 @@ public class LokasiService {
     @Autowired
     public ValidationService validationService;
 
-    public String create(User user, CreateKredLokasiReq req){
+    public KredLokasiResp create(User user, CreateKredLokasiReq req){
         validationService.validate(user);
 
-        try {
             KredensialLokasi kredensialLokasi = new KredensialLokasi();
             kredensialLokasi.setIdKredensialLokasi(UUID.randomUUID().toString());
             kredensialLokasi.setLokasi(req.getLokasi());
@@ -33,10 +36,30 @@ public class LokasiService {
             kredensialLokasi.setUser(user);
 
             lokasiRepository.save(kredensialLokasi);
-        }catch (Exception e){
 
-        }
+        return response(kredensialLokasi);
+    }
 
-        return "accept";
+    private KredLokasiResp response(KredensialLokasi req){
+        return KredLokasiResp.builder()
+                .idKredLokasi(req.getIdKredensialLokasi())
+                .lokasi(req.getLokasi())
+                .tahunMulai(req.getTahunMulai())
+                .tahunSelesai(req.getTahunSelesai())
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    public KredLokasiResp get(User user, String idKredLokasi){
+        validationService.validate(user);
+
+        KredensialLokasi kredensialLokasi = lokasiRepository
+                .findFirstByUserAndId(user, idKredLokasi)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "kredensial lokasi tidak ditemukan"
+                ));
+
+        return response(kredensialLokasi);
     }
 }

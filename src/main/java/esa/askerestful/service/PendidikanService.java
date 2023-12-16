@@ -3,9 +3,14 @@ package esa.askerestful.service;
 import esa.askerestful.entity.KredensialPendidikan;
 import esa.askerestful.entity.User;
 import esa.askerestful.model.CreateKredPendidikanReq;
+import esa.askerestful.model.KredPekerjaanResp;
+import esa.askerestful.model.KredPendidikanResp;
 import esa.askerestful.repository.PendidikanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.UUID;
 
@@ -21,10 +26,9 @@ public class PendidikanService {
     @Autowired
     public PendidikanRepository pendidikanRepository;
 
-    public String create(User user , CreateKredPendidikanReq req){
+    public KredPendidikanResp create(User user , CreateKredPendidikanReq req){
         validationService.validate(user);
 
-        try{
             KredensialPendidikan kredensialPendidikan = new KredensialPendidikan();
             kredensialPendidikan.setIdKredensialPendidikan(UUID.randomUUID().toString());
             kredensialPendidikan.setSekolah(req.getSekolah());
@@ -33,10 +37,31 @@ public class PendidikanService {
             kredensialPendidikan.setTahunKelulusan(req.getTahunLulus());
             kredensialPendidikan.setUser(user);
             pendidikanRepository.save(kredensialPendidikan);
-        }catch (Exception e){
-            throw e;
-        }
 
-        return "accept";
+        return response(kredensialPendidikan);
+    }
+
+    private KredPendidikanResp response(KredensialPendidikan req){
+        return KredPendidikanResp.builder()
+                .idKredPendidikan(req.getIdKredensialPendidikan())
+                .sekolah(req.getSekolah())
+                .jurusan(req.getJurusan())
+                .jenisGelar(req.getJenisGelar())
+                .tahunLulus(req.getTahunKelulusan())
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    public KredPendidikanResp get(User user, String idKredPendidikan){
+        validationService.validate(user);
+
+        KredensialPendidikan kredensialPendidikan = pendidikanRepository
+                .findFirstByUserAndId(user, idKredPendidikan)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "kredensial pendidikan tidak ditemukan"
+                        ));
+
+        return response(kredensialPendidikan);
     }
 }

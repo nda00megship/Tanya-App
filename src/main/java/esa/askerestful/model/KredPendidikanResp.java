@@ -15,6 +15,8 @@ import java.sql.Timestamp;
 @Setter
 public class KredPendidikanResp {
 
+    public String idKredPendidikan;
+
     public String sekolah;
 
     public String jurusan;
