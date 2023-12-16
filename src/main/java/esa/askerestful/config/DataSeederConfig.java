@@ -4,10 +4,7 @@ import esa.askerestful.data.GambarSeeder;
 import esa.askerestful.data.KomentarSeeder;
 import esa.askerestful.data.PertanyaanSeeder;
 import esa.askerestful.data.UserSeeder;
-import esa.askerestful.repository.GambarRepository;
-import esa.askerestful.repository.KomentarRepository;
-import esa.askerestful.repository.PertanyaanRepository;
-import esa.askerestful.repository.UserRepository;
+import esa.askerestful.repository.*;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +25,15 @@ public class DataSeederConfig{
     private GambarRepository gambarRepository;
 
     @Autowired
+    private PekerjaanRepository pekerjaanRepository;
+
+    @Autowired
+    private LokasiRepository lokasiRepository;
+
+    @Autowired
+    private PendidikanRepository pendidikanRepository;
+
+    @Autowired
     private UserSeeder userSeeder;
 
     @Autowired
@@ -41,6 +47,9 @@ public class DataSeederConfig{
 
     @PostConstruct
     public void seedData() {
+        lokasiRepository.deleteAll();
+        pekerjaanRepository.deleteAll();
+        pendidikanRepository.deleteAll();
         komentarRepository.deleteAll();
         gambarRepository.deleteAll();
         pertanyaanRepository.deleteAll();

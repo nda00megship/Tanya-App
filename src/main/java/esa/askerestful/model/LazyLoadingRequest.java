@@ -11,9 +11,6 @@ import lombok.*;
 @Builder
 public class LazyLoadingRequest {
 
-//    @NotNull
-//    private Integer totalElements;
-
     @NotNull
     private Integer page;
 

@@ -8,8 +8,9 @@ Request Header :
 Request BODY :
 ```json
 {
-  "pekerjaan" : "programmer" ,
-  "pendidikan" : "Institut Fukuoka",
+  "pekerjaan" : "programmer" , // satu persatu
+  "pendidikan" : "Institut Fukuoka", // satu persatu
+  "lokasi" : "surabaya", // satu persatu
   "tanggal" : "23-07-2023"
 }
 ```
@@ -21,6 +22,7 @@ Response BODY (Success) :
   "data": {
     "id": "random String",
     "pekerjaan": "programmer",
+    "lokasi" : "surabaya",
     "pendidikan": "Institut Fukuoka",
     "tanggal": "23-07-2023"
   }
@@ -57,6 +59,7 @@ Request BODY :
 {
   "pekerjaan" : "new programmer" ,
   "pendidikan" : "new Institut Fukuoka",
+  "lokasi" : "surabaya",
   "tanggal" : "new 23-07-2023"
 }
 ```
@@ -68,6 +71,7 @@ Response BODY (Success):
   "data": {
     "pekerjaan" : "new programmer" ,
     "pendidikan" : "new Institut Fukuoka",
+    "lokasi" : "surabaya",
     "tanggal" : "new 23-07-2023"
   }
 }
