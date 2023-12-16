@@ -17,19 +17,19 @@ import java.sql.Timestamp;
 public class KredensialPekerjaan {
 
     @Id
-    public String idKredensial;
+    private String idKredensialPekerjaan;
 
-    public String Posisi;
+    private String Posisi;
 
-    public String perusahaan;
+    private String perusahaan;
 
     @Column(name = "tahun_mulai")
-    public Date tahunMulai;
+    private Date tahunMulai;
 
     @Column(name = "tahun_selesai")
-    public Date tahunSelesai;
+    private Date tahunSelesai;
 
     @ManyToOne
     @JoinColumn(name = "idUser" , referencedColumnName = "id_user")
-    public User user;
+    private User user;
 }

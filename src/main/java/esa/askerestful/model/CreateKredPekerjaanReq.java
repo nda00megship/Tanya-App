@@ -17,17 +17,17 @@ public class CreateKredPekerjaanReq {
 
     @NotBlank
     @Size(max = 50)
-    public String posisi;
+    private String posisi;
 
     @NotBlank
     @Size(max = 100)
-    public String perusahaan;
+    private String perusahaan;
 
     @NotBlank
     @Size(max = 50)
-    public Date tahunMulai;
+    private Date tahunMulai;
 
     @NotBlank
     @Size(max = 50)
-    public Date tahunSelesai;
+    private Date tahunSelesai;
 }

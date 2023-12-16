@@ -29,22 +29,10 @@ Response Body (Success) :
         {
           "idKomentar" : "komentar_1",
           "nama" :  "Maulana",
-          "deskripsi": "ini ada komentar ke sekian",
-          "balesan" : [
-            {
-              "idKomentar" : "balasan_1",
-              "nama" :  "Maulana",
-              "deskripsi": "ini ada komentar ke sekian"
-            },
-            {
-              "idKomentar" : "balasan_2",
-              "nama" :  "Maulana",
-              "deskripsi": "ini ada komentar ke sekian"
-            }
-          ]
+          "deskripsi": "ini ada komentar ke sekian"
         } ,
         {
-          "idKomentar1" : "komentar_2",
+          "idKomentar" : "komentar_2",
           "nama" :  "Akbar",
           "deskripsi": "ini ada komentar ke sekian"
         }

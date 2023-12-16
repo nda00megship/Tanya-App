@@ -40,6 +40,9 @@ public class GambarService {
     public GambarResponse uploadGambar(User user , Pertanyaan pertanyaan, CreateGambarRequest gambarRequest)throws Exception {
         validationService.validate(pertanyaan);
 
+        if(gambarRepository.existByPath(gambarRequest.getPath())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "path sudah ada pakai yang lain");
+        }
         Gambar gambar = new Gambar();
         gambar.setIdGambar(UUID.randomUUID().toString());
         gambar.setNamaGambar(gambarRequest.getNamaGambar());

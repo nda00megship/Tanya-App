@@ -47,9 +47,9 @@ public class DataSeederConfig{
 
     @PostConstruct
     public void seedData() {
+        pendidikanRepository.deleteAll();
         lokasiRepository.deleteAll();
         pekerjaanRepository.deleteAll();
-        pendidikanRepository.deleteAll();
         komentarRepository.deleteAll();
         gambarRepository.deleteAll();
         pertanyaanRepository.deleteAll();

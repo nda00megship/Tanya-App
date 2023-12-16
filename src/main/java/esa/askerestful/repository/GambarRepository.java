@@ -11,4 +11,7 @@ public interface GambarRepository extends JpaRepository<Gambar ,String> {
 
     @Query("SELECT g FROM Gambar g WHERE g.namaGambar = :fileName ")
     Optional<Gambar> findByName(String fileName);
+
+    @Query("SELECT CASE WHEN COUNT(g) > 0 THEN true ELSE false END FROM Gambar g WHERE g.path = :path")
+    boolean existByPath(String path);
 }

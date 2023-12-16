@@ -17,16 +17,16 @@ public class CreateKredPendidikanReq {
 
     @NotBlank
     @Size(max = 100)
-    public String sekolah;
+    private String sekolah;
 
     @NotBlank
     @Size(max = 100)
-    public String jurusan;
+    private String jurusan;
 
     @NotBlank
     @Size(max = 50)
-    public String jenisGelar;
+    private String jenisGelar;
 
     @NotBlank
-    public Date tahunLulus;
+    private Date tahunLulus;
 }

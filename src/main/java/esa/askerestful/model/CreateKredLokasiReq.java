@@ -17,13 +17,13 @@ public class CreateKredLokasiReq {
 
     @NotBlank
     @Size(max = 200)
-    public String lokasi;
+    private String lokasi;
 
     @NotBlank
     @Size(max = 100)
-    public Date tahunMulai;
+    private Date tahunMulai;
 
     @NotBlank
     @Size(max = 100)
-    public Date tahunSelesai;
+    private Date tahunSelesai;
 }

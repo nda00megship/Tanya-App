@@ -26,7 +26,7 @@ public class LokasiService {
 
         try {
             KredensialLokasi kredensialLokasi = new KredensialLokasi();
-            kredensialLokasi.setIdLokasi(UUID.randomUUID().toString());
+            kredensialLokasi.setIdKredensialLokasi(UUID.randomUUID().toString());
             kredensialLokasi.setLokasi(req.getLokasi());
             kredensialLokasi.setTahunMulai(req.getTahunMulai());
             kredensialLokasi.setTahunSelesai(req.getTahunSelesai());
