@@ -84,4 +84,19 @@ public class LokasiService {
 
         return response(kredensialLokasi);
     }
+
+    @Transactional
+    public void delete(User user, String idKredLokasi){
+        validationService.validate(user);
+        validationService.validate(idKredLokasi);
+
+        KredensialLokasi kredensialLokasi = lokasiRepository
+                .findFirstByUserAndId(user, idKredLokasi)
+                .orElseThrow( () -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "kredensial lokasi tidak ditemukan"
+                ));
+
+        lokasiRepository.delete(kredensialLokasi);
+    }
 }

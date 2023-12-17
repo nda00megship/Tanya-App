@@ -56,4 +56,16 @@ public class LokasiController {
                 .data(kredLokasiResp)
                 .build();
     }
+
+    @DeleteMapping(
+            path = "/api/lokasi/{idKredLokasi}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<String> delete(User user, @PathVariable("idKredLokasi") String idKredLokasi ){
+        lokasiService.delete(user, idKredLokasi);
+
+        return WebResponse.<String>builder()
+                .data("kredensial lokasi telah terhapus")
+                .build();
+    }
 }

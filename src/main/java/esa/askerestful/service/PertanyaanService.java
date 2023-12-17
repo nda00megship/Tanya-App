@@ -110,8 +110,6 @@ public class PertanyaanService {
         Specification<Pertanyaan> specification = ((root, query, builder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-//            predicates.add(builder.equal(root.get("user") , user));
-
             if(Objects.nonNull(request.getHeader())){
                 predicates.add(builder.or(
                         builder.like(root.get("header") , "%" + request.getHeader() + "%")

@@ -56,4 +56,16 @@ public class PendidikanController {
                 .data(resp)
                 .build();
     }
+
+    @DeleteMapping(
+            path = "/api/pendidikan/{idKredPendidikan}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<String> delete(User user, @PathVariable("idKredPendidikan") String idKredPendidikan){
+        pendidikanService.delete(user, idKredPendidikan);
+
+        return WebResponse.<String>builder()
+                .data("data telah terhapus")
+                .build();
+    }
 }

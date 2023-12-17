@@ -54,4 +54,16 @@ public class PekerjaanController {
                 .data(kredPendidikanResp)
                 .build();
     }
+
+    @DeleteMapping(
+            path = "/api/pekerjaan/{idKredPekerjaan}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<String> delete(User user, @PathVariable("idKredPekerjaan") String id){
+        pekerjaanService.delete(user, id);
+
+        return WebResponse.<String>builder()
+                .data("kredensial pekerjaan telah terhapus")
+                .build();
+    }
 }

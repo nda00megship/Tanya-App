@@ -88,4 +88,19 @@ public class PendidikanService {
 
         return response(kredensialPendidikan);
     }
+
+    @Transactional
+    public void delete(User user, String idKredPendidikan){
+        validationService.validate(user);
+        validationService.validate(idKredPendidikan);
+
+        KredensialPendidikan kredensialPendidikan = pendidikanRepository
+                .findFirstByUserAndId(user, idKredPendidikan)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "kredensial pendidikan tidak ditemukan"
+                ));
+
+        pendidikanRepository.delete(kredensialPendidikan);
+    }
 }
