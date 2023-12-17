@@ -42,4 +42,18 @@ public class LokasiController {
                 .data(kredLokasiResp)
                 .build();
     }
+
+    @PutMapping(
+            path = "/api/lokasi/{idKredLokasi}",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<KredLokasiResp> update(User user, @RequestBody CreateKredLokasiReq req,
+                                              @PathVariable("idKredLokasi") String idKredLokasi){
+        KredLokasiResp kredLokasiResp = lokasiService.update(user, req, idKredLokasi);
+
+        return WebResponse.<KredLokasiResp>builder()
+                .data(kredLokasiResp)
+                .build();
+    }
 }

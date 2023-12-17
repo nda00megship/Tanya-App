@@ -64,4 +64,28 @@ public class PendidikanService {
 
         return response(kredensialPendidikan);
     }
+
+    @Transactional
+    public KredPendidikanResp update(User user, CreateKredPendidikanReq req, String idKredPendidikan){
+        validationService.validate(user);
+        validationService.validate(idKredPendidikan);
+
+        KredensialPendidikan kredensialPendidikan = pendidikanRepository
+                .findFirstByUserAndId(user, idKredPendidikan)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "kredensial pendidikan tidak ditemukan"
+                ));
+
+        try {
+            kredensialPendidikan.setSekolah(req.getSekolah());
+            kredensialPendidikan.setJurusan(req.getJurusan());
+            kredensialPendidikan.setJenisGelar(req.getJenisGelar());
+            kredensialPendidikan.setTahunKelulusan(req.getTahunLulus());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return response(kredensialPendidikan);
+    }
 }

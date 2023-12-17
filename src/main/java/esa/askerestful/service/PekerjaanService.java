@@ -5,6 +5,7 @@ import esa.askerestful.entity.KredensialPendidikan;
 import esa.askerestful.entity.User;
 import esa.askerestful.model.CreateKredPekerjaanReq;
 import esa.askerestful.model.KredPekerjaanResp;
+import esa.askerestful.model.UpdateKredPekerjaan;
 import esa.askerestful.repository.PekerjaanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -61,6 +62,26 @@ public class PekerjaanService {
                         HttpStatus.NOT_FOUND,
                         "kredensial pekerjaan tidak ditemukan"
                         ));
+
+        return resp(kredensialPekerjaan);
+    }
+
+    @Transactional
+    public KredPekerjaanResp update(User user, UpdateKredPekerjaan req, String idKredPekerjaan){
+        validationService.validate(user);
+        validationService.validate(idKredPekerjaan);
+
+        KredensialPekerjaan kredensialPekerjaan = pekerjaanRepository
+                .findFirstByUserAndId(user, idKredPekerjaan)
+                .orElseThrow( () -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "kredensial pekerjaan tidak ditemukan"
+                ));
+
+        kredensialPekerjaan.setPosisi(req.getPosisi());
+        kredensialPekerjaan.setPerusahaan(req.getPerusahaan());
+        kredensialPekerjaan.setTahunMulai(req.getTahunMulai());
+        kredensialPekerjaan.setTahunSelesai(req.getTahunSelesai());
 
         return resp(kredensialPekerjaan);
     }

@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class TokenResponse {
 
-
     private String token;
 
     private Long expiredAt;

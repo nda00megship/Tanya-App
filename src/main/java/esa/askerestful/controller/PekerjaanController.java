@@ -2,9 +2,7 @@ package esa.askerestful.controller;
 
 import esa.askerestful.entity.KredensialPekerjaan;
 import esa.askerestful.entity.User;
-import esa.askerestful.model.CreateKredPekerjaanReq;
-import esa.askerestful.model.KredPekerjaanResp;
-import esa.askerestful.model.WebResponse;
+import esa.askerestful.model.*;
 import esa.askerestful.service.PekerjaanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -39,6 +37,21 @@ public class PekerjaanController {
 
         return WebResponse.<KredPekerjaanResp>builder()
                 .data(kredPekerjaanResp)
+                .build();
+    }
+
+    @PutMapping(
+            path = "/api/pekerjaan/{idKredPekerjaan}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<KredPekerjaanResp> update(User user, @RequestBody UpdateKredPekerjaan req
+            , @PathVariable("idKredPekerjaan") String id){
+
+        KredPekerjaanResp kredPendidikanResp = pekerjaanService.update(user, req,id);
+
+        return WebResponse.<KredPekerjaanResp>builder()
+                .data(kredPendidikanResp)
                 .build();
     }
 }

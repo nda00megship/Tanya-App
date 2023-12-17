@@ -1,5 +1,6 @@
 package esa.askerestful.controller;
 
+import esa.askerestful.entity.KredensialPendidikan;
 import esa.askerestful.entity.User;
 import esa.askerestful.model.CreateKredPendidikanReq;
 import esa.askerestful.model.KredPekerjaanResp;
@@ -36,6 +37,20 @@ public class PendidikanController {
     )
     public WebResponse<KredPendidikanResp> get(User user, @PathVariable("idKredPendidikan") String id){
         KredPendidikanResp resp = pendidikanService.get(user, id);
+
+        return WebResponse.<KredPendidikanResp>builder()
+                .data(resp)
+                .build();
+    }
+
+    @PutMapping(
+            path = "/api/pendidikan/{idKredPendidikan}",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<KredPendidikanResp> update(User user, @RequestBody CreateKredPendidikanReq req
+                                                  ,@PathVariable("idKredPendidikan") String idKredPendidikan){
+        KredPendidikanResp resp = pendidikanService.update(user, req, idKredPendidikan);
 
         return WebResponse.<KredPendidikanResp>builder()
                 .data(resp)

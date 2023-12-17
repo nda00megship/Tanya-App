@@ -62,4 +62,26 @@ public class LokasiService {
 
         return response(kredensialLokasi);
     }
+
+    @Transactional
+    public KredLokasiResp update(User user, CreateKredLokasiReq req, String idKredLokasi){
+        validationService.validate(user);
+
+        KredensialLokasi kredensialLokasi = lokasiRepository
+                .findFirstByUserAndId(user, idKredLokasi)
+                .orElseThrow( () -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "kredensial lokasi tidak ditemukan"
+                ));
+
+        try {
+            kredensialLokasi.setLokasi(req.getLokasi());
+            kredensialLokasi.setTahunMulai(req.getTahunMulai());
+            kredensialLokasi.setTahunSelesai(req.getTahunSelesai());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return response(kredensialLokasi);
+    }
 }
