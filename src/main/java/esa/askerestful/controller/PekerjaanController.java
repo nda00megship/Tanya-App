@@ -29,11 +29,11 @@ public class PekerjaanController {
 
 
     @GetMapping(
-            path = "/api/pekerjaan/{idKredPekerjaan}",
+            path = "/api/pekerjaan/{username}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public WebResponse<KredPekerjaanResp> get(User user, @PathVariable("idKredPekerjaan") String id){
-        KredPekerjaanResp kredPekerjaanResp = pekerjaanService.get(user, id);
+    public WebResponse<KredPekerjaanResp> get(@PathVariable("username") String user){
+        KredPekerjaanResp kredPekerjaanResp = pekerjaanService.get(user);
 
         return WebResponse.<KredPekerjaanResp>builder()
                 .data(kredPekerjaanResp)

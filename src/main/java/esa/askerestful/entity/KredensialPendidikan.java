@@ -28,7 +28,7 @@ public class KredensialPendidikan {
     @Column(name = "tahun_kelulusan")
     private Date tahunKelulusan;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "idUser" , referencedColumnName = "id_user")
     private User user;
 }

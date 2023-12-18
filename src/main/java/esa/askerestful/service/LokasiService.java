@@ -1,6 +1,7 @@
 package esa.askerestful.service;
 
 import esa.askerestful.entity.KredensialLokasi;
+import esa.askerestful.entity.KredensialPendidikan;
 import esa.askerestful.entity.User;
 import esa.askerestful.model.CreateKredLokasiReq;
 import esa.askerestful.model.KredLokasiResp;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -27,15 +29,22 @@ public class LokasiService {
 
     public KredLokasiResp create(User user, CreateKredLokasiReq req){
         validationService.validate(user);
+        KredensialLokasi kredensialLokasi = new KredensialLokasi();
 
-            KredensialLokasi kredensialLokasi = new KredensialLokasi();
+        Optional<KredensialLokasi> kp = lokasiRepository
+                .findByUser(user);
+
+        if (kp.isEmpty()){
             kredensialLokasi.setIdKredensialLokasi(UUID.randomUUID().toString());
             kredensialLokasi.setLokasi(req.getLokasi());
             kredensialLokasi.setTahunMulai(req.getTahunMulai());
             kredensialLokasi.setTahunSelesai(req.getTahunSelesai());
             kredensialLokasi.setUser(user);
-
             lokasiRepository.save(kredensialLokasi);
+        }else {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "kredensial sudah dibuat");
+        }
+
 
         return response(kredensialLokasi);
     }
@@ -50,11 +59,10 @@ public class LokasiService {
     }
 
     @Transactional(readOnly = true)
-    public KredLokasiResp get(User user, String idKredLokasi){
-        validationService.validate(user);
+    public KredLokasiResp get(String username){
 
         KredensialLokasi kredensialLokasi = lokasiRepository
-                .findFirstByUserAndId(user, idKredLokasi)
+                .findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "kredensial lokasi tidak ditemukan"

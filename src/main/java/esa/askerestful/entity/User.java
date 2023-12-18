@@ -40,13 +40,13 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Gambar> gambar;
 
-    @OneToMany(mappedBy = "user")
-    private List<KredensialPekerjaan> kredensialPekerjaans;
+    @OneToOne(mappedBy = "user")
+    private KredensialPekerjaan kredensialPekerjaans;
 
 
-    @OneToMany(mappedBy = "user")
-    private List<KredensialPendidikan> kredensialPendidikans;
+    @OneToOne(mappedBy = "user")
+    private KredensialPendidikan kredensialPendidikans;
 
-    @OneToMany(mappedBy = "user")
-    private List<KredensialLokasi> kredensialLokasis;
+    @OneToOne(mappedBy = "user")
+    private KredensialLokasi kredensialLokasis;
 }

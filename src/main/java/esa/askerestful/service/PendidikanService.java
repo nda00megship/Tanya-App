@@ -1,5 +1,6 @@
 package esa.askerestful.service;
 
+import esa.askerestful.entity.KredensialPekerjaan;
 import esa.askerestful.entity.KredensialPendidikan;
 import esa.askerestful.entity.User;
 import esa.askerestful.model.CreateKredPendidikanReq;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -30,6 +32,11 @@ public class PendidikanService {
         validationService.validate(user);
 
             KredensialPendidikan kredensialPendidikan = new KredensialPendidikan();
+
+        Optional<KredensialPendidikan> kp = pendidikanRepository
+                .findByUser(user);
+
+        if (kp.isEmpty()){
             kredensialPendidikan.setIdKredensialPendidikan(UUID.randomUUID().toString());
             kredensialPendidikan.setSekolah(req.getSekolah());
             kredensialPendidikan.setJurusan(req.getJurusan());
@@ -37,6 +44,10 @@ public class PendidikanService {
             kredensialPendidikan.setTahunKelulusan(req.getTahunLulus());
             kredensialPendidikan.setUser(user);
             pendidikanRepository.save(kredensialPendidikan);
+        }else{
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "kredensial sudah dibuat");
+        }
+
 
         return response(kredensialPendidikan);
     }
@@ -52,11 +63,10 @@ public class PendidikanService {
     }
 
     @Transactional(readOnly = true)
-    public KredPendidikanResp get(User user, String idKredPendidikan){
-        validationService.validate(user);
+    public KredPendidikanResp get(String username){
 
         KredensialPendidikan kredensialPendidikan = pendidikanRepository
-                .findFirstByUserAndId(user, idKredPendidikan)
+                .findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "kredensial pendidikan tidak ditemukan"

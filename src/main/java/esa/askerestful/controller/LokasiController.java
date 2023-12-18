@@ -32,11 +32,11 @@ public class LokasiController {
     }
 
     @GetMapping(
-            path = "/api/lokasi/{idKredLokasi}",
+            path = "/api/lokasi/{username}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public WebResponse<KredLokasiResp> get(User user, @PathVariable("idKredLokasi") String id){
-        KredLokasiResp kredLokasiResp = lokasiService.get(user, id);
+    public WebResponse<KredLokasiResp> get(@PathVariable("username") String username){
+        KredLokasiResp kredLokasiResp = lokasiService.get(username);
 
         return WebResponse.<KredLokasiResp>builder()
                 .data(kredLokasiResp)

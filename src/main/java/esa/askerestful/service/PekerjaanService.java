@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -29,8 +30,12 @@ public class PekerjaanService {
 
     public KredPekerjaanResp create(User user, CreateKredPekerjaanReq req){
         validationService.validate(user);
+        KredensialPekerjaan kredensialPekerjaan = new KredensialPekerjaan();
 
-            KredensialPekerjaan kredensialPekerjaan = new KredensialPekerjaan();
+        Optional<KredensialPekerjaan> kp = pekerjaanRepository
+                .findByUser(user);
+
+        if(kp.isEmpty()){
             kredensialPekerjaan.setIdKredensialPekerjaan(UUID.randomUUID().toString());
             kredensialPekerjaan.setPosisi(req.getPosisi());
             kredensialPekerjaan.setPerusahaan(req.getPerusahaan());
@@ -38,6 +43,12 @@ public class PekerjaanService {
             kredensialPekerjaan.setTahunSelesai(req.getTahunSelesai());
             kredensialPekerjaan.setUser(user);
             pekerjaanRepository.save(kredensialPekerjaan);
+        }else {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "kredensial sudah dibuat");
+        }
+
+
+
 
         return resp(kredensialPekerjaan);
     }
@@ -53,11 +64,10 @@ public class PekerjaanService {
     }
 
     @Transactional(readOnly = true)
-    public KredPekerjaanResp get(User user, String idKredPekerjaan){
-        validationService.validate(user);
+    public KredPekerjaanResp get(String username){
 
         KredensialPekerjaan kredensialPekerjaan = pekerjaanRepository
-                .findFirstByUserAndId(user, idKredPekerjaan)
+                .findByUsername(username)
                 .orElseThrow( () -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "kredensial pekerjaan tidak ditemukan"
