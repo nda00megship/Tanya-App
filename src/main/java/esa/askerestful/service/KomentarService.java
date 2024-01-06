@@ -75,6 +75,23 @@ public class KomentarService {
                 .build();
     }
 
+    public KomentarResponse getKomenUser(String username){
+        validationService.validate(username);
+
+        Komentar komentar = komentarRepository.findKomentarByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND ,
+                        "Komentar Not found"
+                ));
+
+        return KomentarResponse.builder()
+                .id_komentar(komentar.getIdKomentar())
+                .deskripsi(komentar.getDeskripsi())
+                .tanggal(komentar.getTanggal())
+                .build();
+
+    }
+
     @Transactional
     public void delete(User user , String idKomentar){
         validationService.validate(user);

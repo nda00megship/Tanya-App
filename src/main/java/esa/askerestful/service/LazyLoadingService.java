@@ -43,7 +43,7 @@ public class LazyLoadingService {
     @Transactional(readOnly = true)
     public List<PertanyaanGambarResponse> getAllPertanyaanWithGambarAndKomentar(int pageNumber, int pageSize) {
     String sql = "SELECT " +
-            "p.id_pertanyaan, " + //0
+            "p.id_pertanyaan, " + // 0
             "u.username, " + // 1
             "p.header, " + // 2
             "p.deskripsi, "+ // 3

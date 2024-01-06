@@ -51,6 +51,19 @@ public class PertanyaanService {
         return toPertanyaanResponse(pertanyaan);
     }
 
+    private List<PertanyaanResponse> toPertanyaanResponseList(List<Pertanyaan> pertanyaanList) {
+        return pertanyaanList.stream()
+                .map(pertanyaan -> PertanyaanResponse.builder()
+                        .id(pertanyaan.getIdPertanyaan())
+                        .header(pertanyaan.getHeader())
+                        .deskripsi(pertanyaan.getDeskripsi())
+                        .suka(pertanyaan.getSuka())
+                        .tanggal(pertanyaan.getTanggal())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+
     private PertanyaanResponse toPertanyaanResponse(Pertanyaan pertanyaan){
         return PertanyaanResponse.builder()
                 .id(pertanyaan.getIdPertanyaan())
@@ -71,6 +84,21 @@ public class PertanyaanService {
                         "pertanyaan not found"
                         ));
         return toPertanyaanResponse(pertanyaan);
+    }
+
+    public List<PertanyaanResponse> getPertanyaanByUsername(String username){
+        validationService.validate(username);
+
+        List<Pertanyaan> pertanyaanList = pertanyaanRepo.getPertanyaanByUsername(username);
+
+        if (pertanyaanList.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Pertanyaan not found"
+            );
+        }
+
+        return toPertanyaanResponseList(pertanyaanList);
     }
 
     @Transactional
