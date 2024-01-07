@@ -45,14 +45,19 @@ public class DataSeederConfig{
     @Autowired
     private GambarSeeder gambarSeeder;
 
+    @Autowired
+    private FollowRepository followRepository;
+
     @PostConstruct
     public void seedData() {
+
         pendidikanRepository.deleteAll();
         lokasiRepository.deleteAll();
         pekerjaanRepository.deleteAll();
         komentarRepository.deleteAll();
         gambarRepository.deleteAll();
         pertanyaanRepository.deleteAll();
+        followRepository.deleteAll();
         userRepository.deleteAll();
 
         userSeeder.seedDataUser();
