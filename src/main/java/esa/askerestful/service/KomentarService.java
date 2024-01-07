@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class KomentarService {
 
@@ -75,21 +78,25 @@ public class KomentarService {
                 .build();
     }
 
-    public KomentarResponse getKomenUser(String username){
+    public List<KomentarResponse> getKomentarByUsername(String username) {
         validationService.validate(username);
 
-        Komentar komentar = komentarRepository.findKomentarByUsername(username)
+        List<Komentar> komentarList = komentarRepository.findKomentarByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND ,
-                        "Komentar Not found"
+                        HttpStatus.NOT_FOUND,
+                        "Komentar not found"
                 ));
 
-        return KomentarResponse.builder()
-                .id_komentar(komentar.getIdKomentar())
-                .deskripsi(komentar.getDeskripsi())
-                .tanggal(komentar.getTanggal())
-                .build();
+        List<KomentarResponse> komentarResponseList;
+        komentarResponseList = komentarList.stream()
+                .map(komentar -> KomentarResponse.builder()
+                        .id_komentar(komentar.getIdKomentar())
+                        .deskripsi(komentar.getDeskripsi())
+                        .tanggal(komentar.getTanggal())
+                        .build())
+                .collect(Collectors.toList());
 
+        return komentarResponseList;
     }
 
     @Transactional

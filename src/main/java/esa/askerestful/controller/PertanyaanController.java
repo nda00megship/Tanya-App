@@ -38,17 +38,17 @@ public class PertanyaanController {
                 .build();
     }
 
-//    @GetMapping(
-//            path = "/api/pertanyaan/{idPertanyaan}",
-//            produces = MediaType.APPLICATION_JSON_VALUE
-//    )
-//    public WebResponse<PertanyaanResponse> get(User user ,@PathVariable("idPertanyaan") String id){
-//        PertanyaanResponse pertanyaanResponse = pertanyaanService.get(user , id);
-//
-//        return WebResponse.<PertanyaanResponse>builder()
-//                .data(pertanyaanResponse)
-//                .build();
-//    }
+    @GetMapping(
+            path = "/api/pertanyaan/id/{idPertanyaan}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<PertanyaanResponse> get(User user ,@PathVariable("idPertanyaan") String id){
+        PertanyaanResponse pertanyaanResponse = pertanyaanService.get(user , id);
+
+        return WebResponse.<PertanyaanResponse>builder()
+                .data(pertanyaanResponse)
+                .build();
+    }
 
     @GetMapping(
             path = "/api/pertanyaan/{username}",

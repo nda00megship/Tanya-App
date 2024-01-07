@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class KomentarController {
 
@@ -32,7 +34,7 @@ public class KomentarController {
     }
 
     @GetMapping(
-            path = "/api/komentar/{idKomentar}",
+            path = "/api/komentar/id/{idKomentar}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public WebResponse<KomentarResponse> get(User user , @PathVariable("idKomentar") String id){
@@ -40,6 +42,17 @@ public class KomentarController {
 
         return WebResponse.<KomentarResponse>builder()
                 .data(komentarResponse)
+                .build();
+    }
+
+    @GetMapping(
+            path = "/api/komentar/{username}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<List<KomentarResponse>> getKomentarByUsername(@PathVariable String username) {
+        List<KomentarResponse> komentarResponses = komentarService.getKomentarByUsername(username);
+        return WebResponse.<List<KomentarResponse>>builder()
+                .data(komentarResponses)
                 .build();
     }
 
