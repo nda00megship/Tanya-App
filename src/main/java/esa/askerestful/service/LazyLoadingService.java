@@ -69,7 +69,15 @@ public class LazyLoadingService {
             "        SELECT CONCAT('[', GROUP_CONCAT( " + // 9
             "            JSON_OBJECT('idKomentar', k.id_komentar, " +
             "                        'nama', u.username, " +
-            "                        'deskripsi', k.deskripsi) " +
+            "                        'deskripsi', k.deskripsi, " +
+            "                        'waktu', " +
+            "                            CASE " +
+            "                                WHEN TIMESTAMPDIFF(SECOND, k.tanggal, NOW()) < 60 THEN 'Beberapa detik yang lalu' " +
+            "                                WHEN TIMESTAMPDIFF(MINUTE, k.tanggal, NOW()) < 60 THEN CONCAT(TIMESTAMPDIFF(MINUTE, k.tanggal, NOW()), ' menit yang lalu') " +
+            "                                WHEN TIMESTAMPDIFF(HOUR, k.tanggal, NOW()) < 24 THEN CONCAT(TIMESTAMPDIFF(HOUR, k.tanggal, NOW()), ' jam yang lalu') " +
+            "                                WHEN TIMESTAMPDIFF(DAY, k.tanggal, NOW()) < 7 THEN CONCAT(TIMESTAMPDIFF(DAY, k.tanggal, NOW()), ' hari yang lalu') " +
+            "                                ELSE DATE_FORMAT(k.tanggal, '%Y-%m-%d %H:%i:%s') " +
+            "                            END) " +
             "        ), ']') " +
             "        FROM komentar k " +
             "        LEFT JOIN users u ON k.id_user = u.id_user " +

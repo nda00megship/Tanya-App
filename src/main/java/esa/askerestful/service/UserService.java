@@ -55,6 +55,20 @@ public class UserService {
                 .build();
     }
 
+    @Transactional(readOnly = true)
+    public UserResponse get(String username){
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND ,
+                        "user tidak ditemukan"
+                ));
+
+        return UserResponse.builder()
+                .email(user.getEmail())
+                .username(user.getUsername())
+                .build();
+    }
+
     @Transactional
     public UserResponse update(UpdateUserRequest request , User user){
         validationService.validate(request);

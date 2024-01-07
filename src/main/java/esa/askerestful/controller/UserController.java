@@ -41,6 +41,18 @@ public class UserController {
                 .build();
     }
 
+    @GetMapping(
+            path = "/api/user/{username}" ,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<UserResponse> getUserByUsername(@PathVariable("username") String username){
+        UserResponse userResponse = userService.get(username);
+
+        return WebResponse.<UserResponse>builder()
+                .data(userResponse)
+                .build();
+    }
+
     @PatchMapping(
             path = "/api/user/current" ,
             consumes = MediaType.APPLICATION_JSON_VALUE ,
