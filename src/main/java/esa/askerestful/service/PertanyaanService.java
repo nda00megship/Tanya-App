@@ -134,36 +134,32 @@ public class PertanyaanService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PertanyaanResponse> search(User user , SearchPertanyaanRequest request){
+    public Page<PertanyaanResponse> search(User user, SearchPertanyaanRequest request) {
         Specification<Pertanyaan> specification = ((root, query, builder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            if(Objects.nonNull(request.getHeader())){
-                predicates.add(builder.or(
-                        builder.like(root.get("header") , "%" + request.getHeader() + "%")
-                ));}
-            if(Objects.nonNull(request.getDeskripsi())){
-                predicates.add(builder.or(
-                        builder.like(root.get("deskripsi") , "%" + request.getDeskripsi() + "%")
-                ));}
+            if (Objects.nonNull(request.getHeader())) {
+                predicates.add(builder.like(root.get("header"), "%" + request.getHeader() + "%"));
+            }
 
-            return query.where(predicates.toArray(
-                    new Predicate[]{}
-            )).getRestriction();
+            if (Objects.nonNull(request.getDeskripsi())) {
+                predicates.add(builder.like(root.get("deskripsi"), "%" + request.getDeskripsi() + "%"));
+            }
 
+            return builder.or(predicates.toArray(new Predicate[]{}));
         });
 
-        Pageable pageable = PageRequest.of(
-                request.getPage() , request.getSize()
-        );
-        Page<Pertanyaan> pertanyaans = pertanyaanRepo.findAll(specification , pageable);
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
+        Page<Pertanyaan> pertanyaans = pertanyaanRepo.findAll(specification, pageable);
+
         List<PertanyaanResponse> pertanyaanResponses = pertanyaans.getContent()
-                .stream().map(this::toPertanyaanResponse)
+                .stream()
+                .map(this::toPertanyaanResponse)
                 .toList();
 
-        return new PageImpl<>(
-                pertanyaanResponses , pageable , pertanyaans.getTotalElements()
-        );
+        return new PageImpl<>(pertanyaanResponses, pageable, pertanyaans.getTotalElements());
     }
+
+
 
 }
