@@ -49,4 +49,6 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private KredensialLokasi kredensialLokasis;
+
+
 }

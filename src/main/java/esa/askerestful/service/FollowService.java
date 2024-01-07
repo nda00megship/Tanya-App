@@ -7,8 +7,10 @@ import esa.askerestful.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
+import java.util.stream.Collectors;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -21,15 +23,15 @@ public class FollowService {
     private FollowRepository followRepository;
 
 
-    public void followByUsername(User user ,String followerUsername, String followedUsername) {
+    public void followByUsername(User user, String followerUsername, String followedUsername) {
         User follower = userRepository.findByUsername(followerUsername)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND , "Follower tidak ditemukan : " + followerUsername));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Follower tidak ditemukan : " + followerUsername));
 
         User followed = userRepository.findByUsername(followedUsername)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND , "Followed tidak ditemukan : " + followedUsername));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Followed tidak ditemukan : " + followedUsername));
 
         if (follower.equals(followed)) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT , "Tidak bisa follow diri sendiri");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Tidak bisa follow diri sendiri");
         }
 
         if (isAlreadyFollowing(follower, followed)) {
@@ -38,8 +40,8 @@ public class FollowService {
             newFollow.setFollowed(followed);
             newFollow.setFollower(follower);
             followRepository.save(newFollow);
-        }else {
-            throw new ResponseStatusException(HttpStatus.CONFLICT , "sudah di follow");
+        } else {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "sudah di follow");
         }
     }
 
@@ -48,7 +50,7 @@ public class FollowService {
     }
 
     public void unfollowByUsername(User user, String followerUsername, String followedUsername) {
-        User follower = userRepository.findByUsername(followerUsername)
+        User follower = userRepository.findByUsername(user.getUsername())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Follower tidak ditemukan: " + followerUsername));
 
         User followed = userRepository.findByUsername(followedUsername)
@@ -62,6 +64,23 @@ public class FollowService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Hubungan follow tidak ditemukan"));
 
         followRepository.delete(followToDelete);
+    }
+
+    @Transactional(readOnly = true)
+    public List<User> getFollowedByUser(String username) {
+        User follower = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND  , "Follower tidak ditemukan"));
+
+        List<String> followedUsernames = followRepository.findFollowedUsernamesByFollowerUsername(follower.getUsername())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND  ,"Data tidak ditemukan"));
+
+        List<User> followedUsers;
+        followedUsers = followedUsernames.stream()
+                .map(usernameList -> userRepository.findByUsername(usernameList)
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND , "Followed tidak ditemukan: " + username)))
+                .collect(Collectors.toList());
+
+        return followedUsers;
     }
 
 }

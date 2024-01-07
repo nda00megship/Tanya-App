@@ -3,6 +3,7 @@ package esa.askerestful.controller;
 import esa.askerestful.entity.User;
 import esa.askerestful.model.FollowRequest;
 import esa.askerestful.model.FollowingResponse;
+import esa.askerestful.model.UserResponse;
 import esa.askerestful.model.WebResponse;
 import esa.askerestful.service.FollowService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class FollowController {
@@ -85,4 +90,19 @@ public class FollowController {
         followService.unfollowByUsername(user, followerUsername, followedUsername);
     }
 
+
+    @GetMapping(
+            path = "/api/followed",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<List<UserResponse>> getFollowedByUser(@RequestParam String username) {
+        List<User> followedUsers = followService.getFollowedByUser(username);
+
+        // Konversi entity User menjadi response UserResponse
+        List<UserResponse> userResponses = followedUsers.stream()
+                .map(user -> new UserResponse(user.getUsername(), user.getEmail()))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(userResponses);
+    }
 }
