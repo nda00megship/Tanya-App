@@ -32,7 +32,7 @@ public class FollowService {
             throw new ResponseStatusException(HttpStatus.CONFLICT , "Tidak bisa follow diri sendiri");
         }
 
-        if (!isAlreadyFollowing(follower, followed)) {
+        if (isAlreadyFollowing(follower, followed)) {
             Follow newFollow = new Follow();
             newFollow.setIdFollowing(UUID.randomUUID().toString());
             newFollow.setFollowed(followed);
@@ -44,6 +44,24 @@ public class FollowService {
     }
 
     private boolean isAlreadyFollowing(User follower, User followed) {
-        return followRepository.existsByFollowerAndFollowed(follower, followed);
+        return !followRepository.existsByFollowerAndFollowed(follower, followed);
     }
+
+    public void unfollowByUsername(User user, String followerUsername, String followedUsername) {
+        User follower = userRepository.findByUsername(followerUsername)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Follower tidak ditemukan: " + followerUsername));
+
+        User followed = userRepository.findByUsername(followedUsername)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Followed tidak ditemukan: " + followedUsername));
+
+        if (isAlreadyFollowing(follower, followed)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Tidak ada hubungan follow yang ditemukan untuk unfollow");
+        }
+
+        Follow followToDelete = followRepository.findByFollowerAndFollowed(follower, followed)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Hubungan follow tidak ditemukan"));
+
+        followRepository.delete(followToDelete);
+    }
+
 }
