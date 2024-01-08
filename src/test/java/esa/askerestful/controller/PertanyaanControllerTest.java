@@ -156,7 +156,7 @@ class PertanyaanControllerTest {
 
 
         mockMvc.perform(
-                get("/api/pertanyaan/" + pertanyaan.getIdPertanyaan())
+                get("/api/pertanyaan/id/" + pertanyaan.getIdPertanyaan())
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("X-API-TOKEN" , "token")
