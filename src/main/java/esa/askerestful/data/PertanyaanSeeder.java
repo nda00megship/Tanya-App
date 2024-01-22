@@ -11,6 +11,8 @@ import esa.askerestful.service.MicroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+
 @Service
 public class PertanyaanSeeder {
     @Autowired
@@ -30,7 +32,7 @@ public class PertanyaanSeeder {
             pertanyaan.setHeader("Apa yang Anda pikirkan tentang masa depan?");
             pertanyaan.setDeskripsi("Berikan pandangan Anda tentang apa yang akan terjadi dalam 10 tahun ke depan Apakah anda tidak khawatir dengan masa yang akan datang seperti itu mungkin aku saja yang hanya mencoba tidak khwatir. dalam kondisi yang baik ini saya ingin meneruskan hidup saya.");
             pertanyaan.setSuka(i + 200);
-            pertanyaan.setTanggal(microService.currentTimestamp);
+            pertanyaan.setTanggal(new Timestamp(System.currentTimeMillis()));
             pertanyaan.setUser(user);
             pertanyaanRepository.save(pertanyaan);
         }
@@ -41,7 +43,7 @@ public class PertanyaanSeeder {
             pertanyaan.setHeader("Bagaimana Anda menangani tantangan dalam pekerjaan?");
             pertanyaan.setDeskripsi("Ceritakan pengalaman Anda dalam menghadapi situasi sulit dan bagaimana Anda mengatasinya.");
             pertanyaan.setSuka(i);
-            pertanyaan.setTanggal(microService.currentTimestamp);
+            pertanyaan.setTanggal(new Timestamp(System.currentTimeMillis()));
             pertanyaan.setUser(user);
             pertanyaanRepository.save(pertanyaan);
         }
@@ -52,7 +54,7 @@ public class PertanyaanSeeder {
             pertanyaan.setHeader("Apa kebijakan terpenting dalam hidup Anda?");
             pertanyaan.setDeskripsi("Bagikan nilai-nilai dan prinsip yang menjadi landasan dalam hidup Anda.");
             pertanyaan.setSuka(i);
-            pertanyaan.setTanggal(microService.currentTimestamp);
+            pertanyaan.setTanggal(new Timestamp(System.currentTimeMillis()));
             pertanyaan.setUser(user);
             pertanyaanRepository.save(pertanyaan);
         }

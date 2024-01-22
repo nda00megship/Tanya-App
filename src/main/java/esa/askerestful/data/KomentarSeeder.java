@@ -10,6 +10,7 @@ import esa.askerestful.service.MicroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -39,7 +40,7 @@ public class KomentarSeeder {
 
                 Komentar komentar = new Komentar();
                 komentar.setIdKomentar("komen_" + i);
-                komentar.setTanggal(microService.currentTimestamp);
+                komentar.setTanggal(new Timestamp(System.currentTimeMillis()));
                 komentar.setUser(user);
                 komentar.setPertanyaan(pertanyaan);
                 komentar.setDeskripsi("Ini adalah komentar #" + i + " untuk pertanyaan ini.");
@@ -49,7 +50,7 @@ public class KomentarSeeder {
                 for (int j = 1; j < 4; j++){
 
                     komentar.setIdKomentar("komen_" + i+j);
-                    komentar.setTanggal(microService.currentTimestamp);
+                    komentar.setTanggal(new Timestamp(System.currentTimeMillis()));
                     komentar.setUser(user);
                     komentar.setPertanyaan(pertanyaan);
                     komentar.setDeskripsi("Ini adalah komentar #" + i + " untuk pertanyaan ini.");

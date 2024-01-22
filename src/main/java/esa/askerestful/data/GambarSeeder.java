@@ -10,6 +10,7 @@ import esa.askerestful.service.MicroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.Random;
 
@@ -38,7 +39,7 @@ public class GambarSeeder {
             gambar.setIdGambar("id_gambar_"+i);
             gambar.setNamaGambar("gambar_" + i);
             gambar.setPath(path + "gambar_" + (i) + ".png");
-            gambar.setTanggal(microService.currentTimestamp);
+            gambar.setTanggal(new Timestamp(System.currentTimeMillis()));
             gambar.setUser(user);
             gambar.setPertanyaan(pertanyaan);
             gambarRepository.save(gambar);
@@ -51,7 +52,7 @@ public class GambarSeeder {
             gambar.setIdGambar("id_gambar_"+i +10);
             gambar.setNamaGambar("gambar_" + i + 10);
             gambar.setPath(path + "gambar_" + i + 10 + ".png");
-            gambar.setTanggal(microService.currentTimestamp);
+            gambar.setTanggal(new Timestamp(System.currentTimeMillis()));
             gambar.setUser(user);
             gambar.setPertanyaan(pertanyaan);
             gambarRepository.save(gambar);

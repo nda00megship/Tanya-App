@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,7 +49,7 @@ public class KomentarService {
         Komentar komentar = new Komentar();
         komentar.setIdKomentar(microService.idKomentarGenerator());
         komentar.setDeskripsi(request.getDeskripsi());
-        komentar.setTanggal(microService.currentTimestamp);
+        komentar.setTanggal(new Timestamp(System.currentTimeMillis()));
         komentar.setUser(user);
         komentar.setPertanyaan(pertanyaan);
 

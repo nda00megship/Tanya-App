@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -44,7 +45,7 @@ public class PertanyaanService {
         pertanyaan.setDeskripsi(req.getDeskripsi());
         pertanyaan.setSuka(0);
         pertanyaan.setUser(user);
-        pertanyaan.setTanggal(microService.currentTimestamp);
+        pertanyaan.setTanggal(new Timestamp(System.currentTimeMillis()));
 
         pertanyaanRepo.save(pertanyaan);
 
